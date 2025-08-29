@@ -19,12 +19,35 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--deep-space-bg);
-            background-image: radial-gradient(circle at center, #4B0082 0%, #000080 100%);
-            background-size: cover;
-            background-position: center;
+            background-image: radial-gradient(circle at center, #000000 0%, #1a0b2e 100%);
             color: var(--accessible-text);
             padding: 20px;
             line-height: 1.6;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 10% 50%, rgba(255, 0, 204, 0.3) 0%, rgba(255, 0, 204, 0) 60%),
+                radial-gradient(circle at 80% 20%, rgba(1, 255, 79, 0.3) 0%, rgba(1, 255, 79, 0) 60%),
+                radial-gradient(circle at 50% 90%, rgba(255, 1, 215, 0.3) 0%, rgba(255, 1, 215, 0) 60%),
+                radial-gradient(circle at 30% 10%, rgba(0, 255, 255, 0.3) 0%, rgba(0, 255, 255, 0) 60%);
+            animation: moveColors 30s linear infinite;
+        }
+
+        @keyframes moveColors {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(-10%, -10%); }
+            50% { transform: translate(10%, 10%); }
+            75% { transform: translate(-10%, 10%); }
+            100% { transform: translate(0, 0); }
         }
 
         .container {
@@ -36,6 +59,8 @@
             border-radius: 15px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+            position: relative; /* Wichtig, um die Container über dem Pseudo-Element zu halten */
+            z-index: 1;
         }
 
         h1 {
