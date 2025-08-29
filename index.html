@@ -1,259 +1,132 @@
 <!DOCTYPE html>
-
 <html lang="de">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Psy-Nexus Template-Tool</title>
-
-<style>
-
-body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #1a1a1a; color: #e0e0e0; padding: 20px; line-height: 1.6; }
-
-.container { max-width: 800px; margin: auto; background-color: #2a2a2a; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); }
-
-h1 { text-align: center; color: #a8ff78; }
-
-.form-group { margin-bottom: 20px; }
-
-label { display: block; margin-bottom: 8px; font-weight: bold; color: #a8ff78; }
-
-input[type="text"], input[type="url"], textarea { width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid #444; background-color: #333; color: #e0e0e0; border-radius: 8px; transition: border-color 0.3s; }
-
-input[type="text"]:focus, input[type="url"]:focus, textarea:focus { outline: none; border-color: #a8ff78; }
-
-.button-group { text-align: center; margin-top: 30px; display: flex; justify-content: center; gap: 15px; }
-
-.button { padding: 12px 25px; border: none; font-weight: bold; font-size: 16px; border-radius: 8px; cursor: pointer; transition: transform 0.1s, box-shadow 0.3s; color: #ffffff; text-shadow: 1px 1px 2px rgba(0,0,0,0.4); }
-
-.generate-button {
-
-background-image: url('data:image/jpeg;base64,/9j/4AAQ...[...dynamic image data truncated for brevity...]...');
-
-background-size: cover;
-
-background-position: center;
-
-}
-
-.copy-button {
-
-background-image: url('data:image/jpeg;base64,/9j/4AAQ...[...dynamic image data truncated for brevity...]...');
-
-background-size: cover;
-
-background-position: center;
-
-}
-
-.button:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(168, 255, 120, 0.4); }
-
-.output-container { margin-top: 40px; }
-
-h2 { color: #a8ff78; text-align: center; }
-
-pre { background-color: #333; color: #e0e0e0; padding: 20px; border-radius: 8px; white-space: pre-wrap; word-wrap: break-word; position: relative; }
-
-.success-message { text-align: center; margin-top: 10px; color: #a8ff78; display: none; }
-
-</style>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psy-Nexus Template-Tool</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #1a1a1a; color: #e0e0e0; padding: 20px; line-height: 1.6; }
+        .container { max-width: 800px; margin: auto; background-color: #2a2a2a; padding: 30px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); }
+        h1 { text-align: center; color: #a8ff78; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-weight: bold; color: #a8ff78; }
+        input[type="text"], input[type="url"], textarea { width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid #444; background-color: #333; color: #e0e0e0; border-radius: 8px; transition: border-color 0.3s; }
+        input[type="text"]:focus, input[type="url"]:focus, textarea:focus { outline: none; border-color: #a8ff78; }
+        .button-group { text-align: center; margin-top: 30px; display: flex; justify-content: center; gap: 15px; }
+        .button { padding: 12px 25px; border: none; font-weight: bold; font-size: 16px; border-radius: 8px; cursor: pointer; transition: transform 0.1s, box-shadow 0.3s; color: #ffffff; text-shadow: 1px 1px 2px rgba(0,0,0,0.4); }
+        .generate-button { 
+            background-image: url('data:image/jpeg;base64,/9j/4AAQ...[...dynamic image data truncated for brevity...]...');
+            background-size: cover;
+            background-position: center;
+        }
+        .copy-button { 
+            background-image: url('data:image/jpeg;base64,/9j/4AAQ...[...dynamic image data truncated for brevity...]...');
+            background-size: cover;
+            background-position: center;
+        }
+        .button:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(168, 255, 120, 0.4); }
+        .output-container { margin-top: 40px; }
+        h2 { color: #a8ff78; text-align: center; }
+        pre { background-color: #333; color: #e0e0e0; padding: 20px; border-radius: 8px; white-space: pre-wrap; word-wrap: break-word; position: relative; }
+        .success-message { text-align: center; margin-top: 10px; color: #a8ff78; display: none; }
+    </style>
 </head>
-
 <body>
 
-
-
 <div class="container">
+    <h1>Psy-Nexus Template-Generator</h1>
+    <p style="text-align: center; color: #b0b0b0;">Erstelle professionelle Event-Ankündigungen für Telegram, Discord & WhatsApp.</p>
 
-<h1>Psy-Nexus Template-Generator</h1>
+    <div class="form-group">
+        <label for="eventName">Event-Name</label>
+        <input type="text" id="eventName" placeholder="z.B. Cosmic Frequencies" onkeyup="generateTemplate()">
+    </div>
+    <div class="form-group">
+        <label for="date">Datum & Zeit</label>
+        <input type="text" id="date" placeholder="z.B. Sa, 12. Okt. | 22:00 - 06:00" onkeyup="generateTemplate()">
+    </div>
+    <div class="form-group">
+        <label for="location">Ort</label>
+        <input type="text" id="location" placeholder="z.B. Club XYZ, Berlin" onkeyup="generateTemplate()">
+    </div>
+    <div class="form-group">
+        <label for="lineup">Line-up</label>
+        <textarea id="lineup" rows="3" placeholder="z.B. • Psy-Fi (Live)&#10;• Alien Sapiens (DJ Set)&#10;• Solar Frequencies" onkeyup="generateTemplate()"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="ticketLink">Ticket-Link (optional)</label>
+        <input type="url" id="ticketLink" placeholder="https://www.eventlink.de" onkeyup="generateTemplate()">
+    </div>
+    <div class="form-group">
+        <label for="description">Beschreibung (optional)</label>
+        <textarea id="description" rows="4" placeholder="Eine kurze Beschreibung des Events." onkeyup="generateTemplate()"></textarea>
+    </div>
 
-<p style="text-align: center; color: #b0b0b0;">Erstelle professionelle Event-Ankündigungen für Telegram, Discord & WhatsApp.</p>
+    <div class="button-group">
+        <button class="button generate-button" onclick="generateTemplate()">Template generieren</button>
+        <button class="button copy-button" onclick="copyCode()" style="display: none;">Kopieren</button>
+    </div>
 
-
-
-<div class="form-group">
-
-<label for="eventName">Event-Name</label>
-
-<input type="text" id="eventName" placeholder="z.B. Cosmic Frequencies" onkeyup="generateTemplate()">
-
+    <div class="output-container" id="outputContainer" style="display: none;">
+        <h2>Vorschau</h2>
+        <pre id="outputCode"></pre>
+        <p class="success-message" id="successMessage">Kopiert!</p>
+    </div>
 </div>
-
-<div class="form-group">
-
-<label for="date">Datum & Zeit</label>
-
-<input type="text" id="date" placeholder="z.B. Sa, 12. Okt. | 22:00 - 06:00" onkeyup="generateTemplate()">
-
-</div>
-
-<div class="form-group">
-
-<label for="location">Ort</label>
-
-<input type="text" id="location" placeholder="z.B. Club XYZ, Berlin" onkeyup="generateTemplate()">
-
-</div>
-
-<div class="form-group">
-
-<label for="lineup">Line-up</label>
-
-<textarea id="lineup" rows="3" placeholder="z.B. • Psy-Fi (Live)&#10;• Alien Sapiens (DJ Set)&#10;• Solar Frequencies" onkeyup="generateTemplate()"></textarea>
-
-</div>
-
-<div class="form-group">
-
-<label for="ticketLink">Ticket-Link (optional)</label>
-
-<input type="url" id="ticketLink" placeholder="https://www.eventlink.de" onkeyup="generateTemplate()">
-
-</div>
-
-<div class="form-group">
-
-<label for="description">Beschreibung (optional)</label>
-
-<textarea id="description" rows="4" placeholder="Eine kurze Beschreibung des Events." onkeyup="generateTemplate()"></textarea>
-
-</div>
-
-
-
-<div class="button-group">
-
-<button class="button generate-button" onclick="generateTemplate()">Template generieren</button>
-
-<button class="button copy-button" onclick="copyCode()" style="display: none;">Kopieren</button>
-
-</div>
-
-
-
-<div class="output-container" id="outputContainer" style="display: none;">
-
-<h2>Vorschau</h2>
-
-<pre id="outputCode"></pre>
-
-<p class="success-message" id="successMessage">Kopiert!</p>
-
-</div>
-
-</div>
-
-
 
 <script>
+    function generateTemplate() {
+        const eventName = document.getElementById('eventName').value || 'Nicht angegeben';
+        const date = document.getElementById('date').value || 'Nicht angegeben';
+        const location = document.getElementById('location').value || 'Nicht angegeben';
+        const lineup = document.getElementById('lineup').value || 'Nicht angegeben';
+        const ticketLink = document.getElementById('ticketLink').value;
+        const description = document.getElementById('description').value;
 
-function generateTemplate() {
+        let template = ` **${eventName}**\n`;
+        template += `\n **Datum & Zeit:**\n${date}`;
+        template += `\n\n **Ort:**\n${location}`;
+        template += `\n\n **Line-up:**\n${lineup}`;
+        
+        if (description) {
+            template += `\n\n **Info:**\n${description}`;
+        }
+        
+        if (ticketLink) {
+            template += `\n\n **Tickets:**\n${ticketLink}`;
+        }
 
-const eventName = document.getElementById('eventName').value || 'Nicht angegeben';
+        const outputCode = document.getElementById('outputCode');
+        const outputContainer = document.getElementById('outputContainer');
+        const copyButton = document.querySelector('.copy-button');
+        
+        if (eventName || date || location || lineup || description || ticketLink) {
+            outputCode.textContent = template;
+            outputContainer.style.display = 'block';
+            copyButton.style.display = 'inline-block';
+        } else {
+            outputContainer.style.display = 'none';
+            copyButton.style.display = 'none';
+        }
+    }
 
-const date = document.getElementById('date').value || 'Nicht angegeben';
-
-const location = document.getElementById('location').value || 'Nicht angegeben';
-
-const lineup = document.getElementById('lineup').value || 'Nicht angegeben';
-
-const ticketLink = document.getElementById('ticketLink').value;
-
-const description = document.getElementById('description').value;
-
-
-
-let template = `🚀 **${eventName}**\n`;
-
-template += `\n📅 **Datum & Zeit:**\n${date}`;
-
-template += `\n\n📍 **Ort:**\n${location}`;
-
-template += `\n\n🎶 **Line-up:**\n${lineup}`;
-
-
-if (description) {
-
-template += `\n\n📝 **Info:**\n${description}`;
-
-}
-
-
-if (ticketLink) {
-
-template += `\n\n🎟️ **Tickets:**\n${ticketLink}`;
-
-}
-
-
-
-const outputCode = document.getElementById('outputCode');
-
-const outputContainer = document.getElementById('outputContainer');
-
-const copyButton = document.querySelector('.copy-button');
-
-
-if (eventName || date || location || lineup || description || ticketLink) {
-
-outputCode.textContent = template;
-
-outputContainer.style.display = 'block';
-
-copyButton.style.display = 'inline-block';
-
-} else {
-
-outputContainer.style.display = 'none';
-
-copyButton.style.display = 'none';
-
-}
-
-}
-
-
-
-function copyCode() {
-
-const outputCode = document.getElementById('outputCode');
-
-const range = document.createRange();
-
-range.selectNodeContents(outputCode);
-
-const selection = window.getSelection();
-
-selection.removeAllRanges();
-
-selection.addRange(range);
-
-document.execCommand('copy');
-
-selection.removeAllRanges();
-
-
-const successMessage = document.getElementById('successMessage');
-
-successMessage.style.display = 'block';
-
-setTimeout(() => {
-
-successMessage.style.display = 'none';
-
-}, 2000);
-
-}
-
+    function copyCode() {
+        const outputCode = document.getElementById('outputCode');
+        const range = document.createRange();
+        range.selectNodeContents(outputCode);
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        document.execCommand('copy');
+        selection.removeAllRanges();
+        
+        const successMessage = document.getElementById('successMessage');
+        successMessage.style.display = 'block';
+        setTimeout(() => {
+            successMessage.style.display = 'none';
+        }, 2000);
+    }
 </script>
 
-
-
 </body>
-
 </html>
