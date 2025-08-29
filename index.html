@@ -6,20 +6,16 @@
     <title>Psy-Nexus Template-Tool</title>
     <style>
         :root {
-            --cosmic-primary: #ff00cc;
-            --psychedelic-accent: #01ff4f;
-            --deep-space-bg: #1a0b2e;
-            --neon-highlight: #ff01d7;
-            --accessible-text: #ffffff;
-            --high-contrast: #000000;
+            --text-color: #ffffff;
+            --background-color: #0d0d0d;
             --card-bg: #2a2a2a;
             --input-bg: #333333;
         }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: #0d0d0d;
-            color: var(--accessible-text);
+            background-color: var(--background-color);
+            color: var(--text-color);
             padding: 20px;
             line-height: 1.6;
         }
@@ -37,7 +33,7 @@
 
         h1 {
             text-align: center;
-            color: var(--psychedelic-accent);
+            color: var(--text-color);
         }
 
         .form-group {
@@ -48,23 +44,23 @@
             display: block;
             margin-bottom: 8px;
             font-weight: bold;
-            color: var(--neon-highlight);
+            color: var(--text-color);
         }
 
         input[type="text"], input[type="url"], textarea {
             width: 100%;
             padding: 12px;
             box-sizing: border-box;
-            border: 1px solid var(--neon-highlight);
+            border: 1px solid var(--text-color);
             background-color: var(--input-bg);
-            color: var(--accessible-text);
+            color: var(--text-color);
             border-radius: 8px;
             transition: border-color 0.3s, box-shadow 0.3s;
         }
         input[type="text"]:focus, input[type="url"]:focus, textarea:focus {
             outline: none;
-            border-color: var(--psychedelic-accent);
-            box-shadow: 0 0 10px rgba(1, 255, 79, 0.5);
+            border-color: var(--text-color);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
         }
 
         .button-group {
@@ -83,18 +79,12 @@
             border-radius: 8px;
             cursor: pointer;
             transition: transform 0.1s, box-shadow 0.3s, background-color 0.3s;
-            color: var(--accessible-text);
-            background-color: var(--neon-highlight);
-        }
-        .generate-button {
-            background-color: #ff01d7;
-        }
-        .copy-button {
-            background-color: #ff01d7;
+            color: var(--text-color);
+            background-color: var(--card-bg);
         }
         .button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 0 15px rgba(255, 1, 215, 0.7);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
         }
 
         .output-container {
@@ -102,13 +92,13 @@
         }
 
         h2 {
-            color: var(--psychedelic-accent);
+            color: var(--text-color);
             text-align: center;
         }
 
         pre {
             background-color: var(--input-bg);
-            color: var(--accessible-text);
+            color: var(--text-color);
             padding: 20px;
             border-radius: 8px;
             white-space: pre-wrap;
@@ -121,7 +111,7 @@
         .success-message {
             text-align: center;
             margin-top: 10px;
-            color: var(--psychedelic-accent);
+            color: var(--text-color);
             display: none;
         }
 
@@ -143,7 +133,7 @@
 <body>
     <div class="container">
         <h1>Psy-Nexus Template-Generator</h1>
-        <p style="text-align: center; color: #b0b0b0;">Erstelle professionelle Event-Ankündigungen für Telegram, Discord & WhatsApp.</p>
+        <p style="text-align: center; color: var(--text-color);">Erstelle professionelle Event-Ankündigungen für Telegram, Discord & WhatsApp.</p>
 
         <div class="form-group">
             <label for="eventName">Event-Name</label>
@@ -171,8 +161,8 @@
         </div>
 
         <div class="button-group">
-            <button class="button generate-button" onclick="generateTemplate()">Template generieren</button>
-            <button class="button copy-button" onclick="copyCode()" style="display: none;">Kopieren</button>
+            <button class="button" onclick="generateTemplate()">Template generieren</button>
+            <button class="button" onclick="copyCode()" style="display: none;">Kopieren</button>
         </div>
 
         <div class="output-container" id="outputContainer" style="display: none;">
@@ -206,7 +196,7 @@
 
             const outputCode = document.getElementById('outputCode');
             const outputContainer = document.getElementById('outputContainer');
-            const copyButton = document.querySelector('.copy-button');
+            const copyButton = document.querySelector('.button:last-child');
             
             if (eventName || date || location || lineup || description || ticketLink) {
                 outputCode.textContent = template;
@@ -238,7 +228,7 @@
                 const successMessage = document.getElementById('successMessage');
                 successMessage.textContent = 'Kopiert!';
                 successMessage.style.display = 'block';
-                successMessage.style.color = 'var(--psychedelic-accent)';
+                successMessage.style.color = 'var(--text-color)';
                 setTimeout(() => {
                     successMessage.style.display = 'none';
                 }, 2000);
@@ -247,7 +237,7 @@
                 console.error('Kopieren fehlgeschlagen:', error);
                 const successMessage = document.getElementById('successMessage');
                 successMessage.textContent = 'Kopieren fehlgeschlagen. Bitte manuell kopieren.';
-                successMessage.style.color = '#ff4d4d';
+                successMessage.style.color = 'var(--text-color)';
                 successMessage.style.display = 'block';
                 setTimeout(() => {
                     successMessage.style.display = 'none';
