@@ -12,15 +12,29 @@
         label { display: block; margin-bottom: 8px; font-weight: bold; color: #a8ff78; }
         input[type="text"], input[type="url"], textarea { width: 100%; padding: 12px; box-sizing: border-box; border: 1px solid #444; background-color: #333; color: #e0e0e0; border-radius: 8px; transition: border-color 0.3s; }
         input[type="text"]:focus, input[type="url"]:focus, textarea:focus { outline: none; border-color: #a8ff78; }
-        .button-group { text-align: center; margin-top: 30px; }
-        button { padding: 12px 25px; border: none; background-color: #a8ff78; color: #1a1a1a; font-weight: bold; font-size: 16px; border-radius: 8px; cursor: pointer; transition: background-color 0.3s, transform 0.1s; }
-        button:hover { background-color: #90ee90; transform: translateY(-2px); }
+        .button-group { text-align: center; margin-top: 30px; display: flex; justify-content: center; gap: 15px; }
+        .button { padding: 12px 25px; border: none; font-weight: bold; font-size: 16px; border-radius: 8px; cursor: pointer; transition: transform 0.1s, box-shadow 0.3s; color: #ffffff; text-shadow: 1px 1px 2px rgba(0,0,0,0.4); }
+        .generate-button { 
+            background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBAQFBAYEBQUFBgYGBgYGBgYHBwgIBw4JCgoJCAgLCwsOCgwOEAwNDxUODw4OCggICggICgwQEBAQEBAMDAz/2wBDAgMDAwMDBAYEBAQGBwUGCwYLCwYLDwwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMD/wAARCAAoACgDASIAAhEBAxEB/8QAFwAAAwEBAAAAAAAAAAAAAAAAAAQFAv/EACIQAAICAQQCAwEBAAAAAAAAAAECAwQRBQASIQYxQRMUIv/EABcBAQEBAQAAAAAAAAAAAAAAAAEEAgb/xAAbEQACAQUAAAAAAAAAAAAAAAAAAQIDBBEFGP/aAAwDAQACEQMRAD8A9UjGzFSSV9j+9Q1gqYw/u1FjXk0XnQWv03xGjWk80z6Dk3n6/vQO39JbLgM1qG/TFWW3uS5q6F6kG0R3l+0x4tF+yM6jUjI8u00L7Qp2fT17P0e0oWlU/G1w69V6B4J0iG7iI9x1VjO3sL0aO9zLp9L+tAW/pXkY/o57gX1N13pX7B3/AO1/O9S+n2i+oGfR/fJq3R6r5dF8LwP6lAW67aDk22p+w38+41fU6dM3fV+4/vQ1B9L17aQv7b6b1K+lqL+136aA7G7aNlWlW2/Wf0xL2tP/AIl/6a6jX3P7l/3x/vA66/jN7/x+4p/jF7/x+4l/nB7/x+4n+cHv/H7gH+dHv/H7hP86Pf+4/cXP8AP3v/AB+4t/nB7/x+4B/nB7/x+4f5we/+PuLf5we/8fuD/OB3/x+4B/nB7/x+4f5we/8fuC/wCcHv8Ax+4l/nB7/wAfuA/zge/8fuD/ADgd/wDH7gH+cT3/AI/cF/zhd/8A7n7gH+cTv/H7hP8AOJv/AB+4L/nB7/x+4P8AnA7/AMfuA/zge/8AH7j/2Q==');
+            background-size: cover;
+            background-position: center;
+        }
+        .copy-button { 
+            background-image: url('data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBAQFBAYEBQUFBgYGBgYGBgYHBwgIBw4JCgoJCAgLCwsOCgwOEAwNDxUODw4OCggICggICgwQEBAQEBAMDAz/2wBDAgMDAwMDBAYEBAQGBwUGCwYLCwYLDwwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMD/wAARCAAoACgDASIAAhEBAxEB/8QAFwAAAwEBAAAAAAAAAAAAAAAAAAMFCP/EACIQAAICAQMDBQEAAAAAAAAAAAAAAAECAxEEEgAFISIGMYGRof/EABgBAQEBAQEAAAAAAAAAAAAAAAIEBwAF/8QAGhEAAgMBAQAAAAAAAAAAAAAAAgMAAREhBP/aAAwDAQACEQMRAD8A9JmG2sX7q1WvJmP8AaoW9jW6675pXh2bQj+c65d6o4tS85q4t18738D/AJh2bVw4H9aB2/pM6b/T/b3/ADX/AEv1L6f5L0f51+r+lB6z+p/p/x/qT+d/T/wCf6UBj63f8L/T/j/Umdc+1X97fSg6P8v7/AH2wQf5b3/f7A//Z');
+            background-size: cover;
+            background-position: center;
+        }
+        .button:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(168, 255, 120, 0.4); }
         .output-container { margin-top: 40px; }
         h2 { color: #a8ff78; text-align: center; }
         pre { background-color: #333; color: #e0e0e0; padding: 20px; border-radius: 8px; white-space: pre-wrap; word-wrap: break-word; position: relative; }
-        .copy-button { position: absolute; top: 10px; right: 10px; background-color: #555; color: #e0e0e0; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px; }
-        .copy-button:hover { background-color: #777; }
         .success-message { text-align: center; margin-top: 10px; color: #a8ff78; display: none; }
+
+        @media (max-width: 600px) {
+            .container { padding: 20px; margin: 10px; }
+            .button-group { flex-direction: column; gap: 10px; }
+            .button { width: 100%; }
+        }
     </style>
 </head>
 <body>
@@ -31,49 +45,49 @@
 
     <div class="form-group">
         <label for="eventName">Event-Name</label>
-        <input type="text" id="eventName" placeholder="z.B. Cosmic Frequencies">
+        <input type="text" id="eventName" placeholder="z.B. Cosmic Frequencies" onkeyup="generateTemplate()">
     </div>
     <div class="form-group">
         <label for="date">Datum & Zeit</label>
-        <input type="text" id="date" placeholder="z.B. Sa, 12. Okt. | 22:00 - 06:00">
+        <input type="text" id="date" placeholder="z.B. Sa, 12. Okt. | 22:00 - 06:00" onkeyup="generateTemplate()">
     </div>
     <div class="form-group">
         <label for="location">Ort</label>
-        <input type="text" id="location" placeholder="z.B. Club XYZ, Berlin">
+        <input type="text" id="location" placeholder="z.B. Club XYZ, Berlin" onkeyup="generateTemplate()">
     </div>
     <div class="form-group">
         <label for="lineup">Line-up</label>
-        <textarea id="lineup" rows="3" placeholder="z.B. • Psy-Fi (Live)&#10;• Alien Sapiens (DJ Set)&#10;• Solar Frequencies"></textarea>
+        <textarea id="lineup" rows="3" placeholder="z.B. • Psy-Fi (Live)&#10;• Alien Sapiens (DJ Set)&#10;• Solar Frequencies" onkeyup="generateTemplate()"></textarea>
     </div>
     <div class="form-group">
         <label for="ticketLink">Ticket-Link (optional)</label>
-        <input type="url" id="ticketLink" placeholder="https://www.eventlink.de">
+        <input type="url" id="ticketLink" placeholder="https://www.eventlink.de" onkeyup="generateTemplate()">
     </div>
     <div class="form-group">
         <label for="description">Beschreibung (optional)</label>
-        <textarea id="description" rows="4" placeholder="Eine kurze Beschreibung des Events."></textarea>
+        <textarea id="description" rows="4" placeholder="Eine kurze Beschreibung des Events." onkeyup="generateTemplate()"></textarea>
     </div>
 
     <div class="button-group">
-        <button onclick="generateTemplate()">Template generieren</button>
+        <button class="button generate-button" onclick="generateTemplate()">Template generieren</button>
+        <button class="button copy-button" onclick="copyCode()" style="display: none;">Kopieren</button>
     </div>
 
     <div class="output-container" id="outputContainer" style="display: none;">
-        <h2>Dein Template</h2>
+        <h2>Vorschau</h2>
         <pre id="outputCode"></pre>
-        <button class="copy-button" onclick="copyCode()">Kopieren</button>
         <p class="success-message" id="successMessage">Kopiert!</p>
     </div>
 </div>
 
 <script>
     function generateTemplate() {
-        const eventName = document.getElementById('eventName').value || 'Nicht angegeben';
-        const date = document.getElementById('date').value || 'Nicht angegeben';
-        const location = document.getElementById('location').value || 'Nicht angegeben';
-        const lineup = document.getElementById('lineup').value || 'Nicht angegeben';
-        const ticketLink = document.getElementById('ticketLink').value;
-        const description = document.getElementById('description').value;
+        const eventName = document.getElementById('eventName').value.trim() || 'Nicht angegeben';
+        const date = document.getElementById('date').value.trim() || 'Nicht angegeben';
+        const location = document.getElementById('location').value.trim() || 'Nicht angegeben';
+        const lineup = document.getElementById('lineup').value.trim() || 'Nicht angegeben';
+        const ticketLink = document.getElementById('ticketLink').value.trim();
+        const description = document.getElementById('description').value.trim();
 
         let template = `🚀 **${eventName}**\n`;
         template += `\n📅 **Datum & Zeit:**\n${date}`;
@@ -89,25 +103,45 @@
         }
 
         const outputCode = document.getElementById('outputCode');
-        outputCode.textContent = template;
-        document.getElementById('outputContainer').style.display = 'block';
+        const outputContainer = document.getElementById('outputContainer');
+        const copyButton = document.querySelector('.copy-button');
+        
+        if (eventName || date || location || lineup || description || ticketLink) {
+            outputCode.textContent = template;
+            outputContainer.style.display = 'block';
+            copyButton.style.display = 'inline-block';
+        } else {
+            outputContainer.style.display = 'none';
+            copyButton.style.display = 'none';
+        }
     }
 
-    function copyCode() {
+    async function copyCode() {
         const outputCode = document.getElementById('outputCode');
-        const range = document.createRange();
-        range.selectNodeContents(outputCode);
-        const selection = window.getSelection();
-        selection.removeAllRanges();
-        selection.addRange(range);
-        document.execCommand('copy');
-        selection.removeAllRanges();
+        const text = outputCode.textContent;
         
-        const successMessage = document.getElementById('successMessage');
-        successMessage.style.display = 'block';
-        setTimeout(() => {
-            successMessage.style.display = 'none';
-        }, 2000);
+        try {
+            if (navigator.clipboard) {
+                await navigator.clipboard.writeText(text);
+            } else {
+                const range = document.createRange();
+                range.selectNodeContents(outputCode);
+                const selection = window.getSelection();
+                selection.removeAllRanges();
+                selection.addRange(range);
+                document.execCommand('copy');
+                selection.removeAllRanges();
+            }
+            
+            const successMessage = document.getElementById('successMessage');
+            successMessage.style.display = 'block';
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 2000);
+            
+        } catch (error) {
+            console.error('Kopieren fehlgeschlagen:', error);
+        }
     }
 </script>
 
