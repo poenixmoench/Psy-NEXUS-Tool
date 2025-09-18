@@ -3,318 +3,337 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Psy-NEXUS-Tool</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>Psy-Nexus Template-Tool</title>
+    
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Psy-Nexus Tool">
+    <meta property="fb:app_id" content="1131697458883876">
+    <meta property="og:title" content="Psy-Nexus Template-Tool">
+    <meta property="og:description" content="Erstelle professionelle Event-Ankündigungen für Telegram, Discord & WhatsApp.">
+    <meta property="og:image" content="https://poenixmoench.github.io/Psy-NEXUS-Tool/assets/share-image-1200x630.jpg">
+
     <style>
+        /* Allgemeine Stile für den Body */
         body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            color: #ffffff;
-            line-height: 1.6;
-            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            line-height: 1.6;
+            background-color: #000000;
+            color: #ffffff;
         }
 
+        /* Container-Stil */
         .container {
-            background-color: rgba(0, 0, 0, 0.6);
-            padding: 30px 40px;
+            max-width: 800px;
+            margin: auto;
+            padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            width: 100%;
-            max-width: 600px;
-            box-sizing: border-box;
+            background-color: #1a1a1a;
+            box-shadow: 0 5px 25px rgba(255, 255, 255, 0.1);
         }
 
-        h1, h2 {
+        /* Überschrift */
+        h1 {
             text-align: center;
-            color: #00ff88;
-            text-shadow: 0 0 10px rgba(0, 255, 136, 0.6);
+            color: #ffffff;
+        }
+
+        /* Beschreibungstext */
+        p {
+            text-align: center;
+            color: #e0e0e0;
+        }
+
+        /* Label */
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        /* Formularfelder */
+        .form-group {
             margin-bottom: 20px;
         }
 
-        label {
-            display: block;
-            margin-top: 15px;
-            font-weight: 700;
-        }
-
-        input[type="text"], textarea {
+        input[type="text"], input[type="url"], textarea {
             width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border-radius: 5px;
-            border: 1px solid #555;
-            background-color: #333;
-            color: #fff;
+            padding: 12px;
             box-sizing: border-box;
-            transition: border-color 0.3s ease;
+            border: 1px solid #444444;
+            background-color: #2a2a2a;
+            color: #ffffff;
+            border-radius: 8px;
+            transition: all 0.3s ease;
         }
 
-        input[type="text"]:focus, textarea:focus {
-            border-color: #00ff88;
+        input[type="text"]:focus, input[type="url"]:focus, textarea:focus {
             outline: none;
+            border-color: #ffffff;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
         }
 
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
+        /* Button-Styles */
         .button-group {
+            text-align: center;
+            margin-top: 30px;
             display: flex;
             justify-content: center;
             gap: 15px;
-            margin-top: 25px;
         }
 
         .button {
-            background-color: #00ff88;
-            color: #000;
+            padding: 12px 25px;
             border: none;
-            padding: 12px 24px;
+            font-weight: bold;
+            font-size: 16px;
             border-radius: 8px;
             cursor: pointer;
-            font-weight: 700;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            transition: all 0.3s ease;
+            color: #000000;
+            background-color: #ffffff;
         }
 
         .button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.4);
+            transform: scale(1.05);
+            background-color: #cccccc;
         }
 
+        /* Output-Container und Meldung */
         .output-container {
-            margin-top: 30px;
-            background-color: #1a1a1a;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+            margin-top: 40px;
+        }
+
+        h2 {
+            color: #ffffff;
+            text-align: center;
         }
 
         pre {
+            background-color: #1a1a1a;
+            color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
             white-space: pre-wrap;
             word-wrap: break-word;
-            font-size: 14px;
-            color: #f0f0f0;
-        }
-        
-        /* Kopier-Button Verbesserungen */
-        .copy-button {
             position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            background: linear-gradient(45deg, #666, #888);
+        }
+
+        .success-message {
+            text-align: center;
+            margin-top: 10px;
+            color: #00ff00;
+            display: none;
+        }
+        
+        /* Neue Sharing-Sektion Styles */
+        .psy-nexus-share {
+            background: linear-gradient(135deg, #00ff88, #00e077);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.2);
+            text-align: center;
+        }
+        
+        .share-button {
+            background: #1877f2;
+            color: white;
             border: none;
+            padding: 12px 20px;
             border-radius: 8px;
-            padding: 12px 24px;
-            color: white;
-            cursor: not-allowed;
-            opacity: 0.6;
-        }
-        
-        .copy-button.active {
-            background: linear-gradient(45deg, #00ff88, #00cc66);
             cursor: pointer;
-            opacity: 1;
-            box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            transition: all 0.2s ease;
         }
         
-        .copy-button.active:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 25px rgba(0, 255, 136, 0.6);
+        .share-button:hover {
+            background: #166fe5;
+            transform: translateY(-1px);
         }
         
-        .copy-button.copying {
-            background: linear-gradient(45deg, #ff6b35, #f7931e);
-            animation: pulse 1s infinite;
+        .copy-button {
+            background: #00ff88;
+            color: black;
         }
         
-        .copy-button.success {
-            background: linear-gradient(45deg, #00ff88, #7b68ee);
-            animation: celebration 0.6s ease;
+        .copy-button:hover {
+            background: #00e077;
         }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        
-        @keyframes celebration {
-            0% { transform: scale(1); }
-            25% { transform: scale(1.1) rotate(5deg); }
-            50% { transform: scale(1.15) rotate(-5deg); }
-            75% { transform: scale(1.1) rotate(3deg); }
-            100% { transform: scale(1) rotate(0deg); }
-        }
-        
-        .success-toast {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: linear-gradient(45deg, #00ff88, #7b68ee);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 8px;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
-            transform: translateX(400px);
-            transition: transform 0.3s ease;
-            z-index: 1000;
-        }
-        
-        .success-toast.show {
-            transform: translateX(0);
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Psy-NEXUS-Tool</h1>
-        <form id="eventForm">
-            <label for="eventName">Event Name:</label>
-            <input type="text" id="eventName" name="eventName">
 
-            <label for="date">Datum & Zeit:</label>
-            <input type="text" id="date" name="date">
+<div class="container">
+    <h1>Psy-Nexus Template-Generator</h1>
+    <p>Erstelle professionelle Event-Ankündigungen für Telegram, Discord & WhatsApp.</p>
 
-            <label for="location">Ort:</label>
-            <input type="text" id="location" name="location">
+    <div class="form-group">
+        <label for="eventName">Event-Name</label>
+        <input type="text" id="eventName" placeholder="z.B. Cosmic Frequencies" onkeyup="generateTemplate()">
+    </div>
+    <div class="form-group">
+        <label for="date">Datum & Zeit</label>
+        <input type="text" id="date" placeholder="z.B. Sa, 12. Okt. | 22:00 - 06:00" onkeyup="generateTemplate()">
+    </div>
+    <div class="form-group">
+        <label for="location">Ort</label>
+        <input type="text" id="location" placeholder="z.B. Club XYZ, Berlin" onkeyup="generateTemplate()">
+    </div>
+    <div class="form-group">
+        <label for="lineup">Line-up</label>
+        <textarea id="lineup" rows="3" placeholder="z.B. • Psy-Fi (Live)&#10;• Alien Sapiens (DJ Set)&#10;• Solar Frequencies" onkeyup="generateTemplate()"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="ticketLink">Ticket-Link (optional)</label>
+        <input type="url" id="ticketLink" placeholder="https://www.eventlink.de" onkeyup="generateTemplate()">
+    </div>
+    <div class="form-group">
+        <label for="description">Beschreibung (optional)</label>
+        <textarea id="description" rows="4" placeholder="Eine kurze Beschreibung des Events." onkeyup="generateTemplate()"></textarea>
+    </div>
+
+    <div class="button-group">
+        <button class="button" onclick="generateTemplate()">Template generieren</button>
+        <button class="button" onclick="copyToClipboard()" style="display: none;">Kopieren</button>
+    </div>
+
+    <div class="output-container" id="outputContainer" style="display: none;">
+        <h2>Vorschau</h2>
+        <pre id="outputCode"></pre>
+        <p class="success-message" id="successMessage">Kopiert!</p>
+    </div>
+
+    <div class="psy-nexus-share">
+        <span class="share-label" style="display:block; margin-bottom: 10px; font-weight: bold;">Teile dein generiertes Event:</span>
+        <div class="share-container" style="display: flex; justify-content: center; gap: 15px;">
+            <button class="share-button copy-button" id="copy-share">
+                📋 Link kopieren
+            </button>
             
-            <label for="lineup">Line-up:</label>
-            <input type="text" id="lineup" name="lineup">
-
-            <label for="description">Beschreibung:</label>
-            <textarea id="description" name="description"></textarea>
-
-            <label for="ticketLink">Ticket-Link:</label>
-            <input type="text" id="ticketLink" name="ticketLink">
-
-            <div class="button-group">
-                <button class="button" onclick="generateTemplate()">Template generieren</button>
-                <button id="copyButton" class="copy-button" onclick="copyCode()" title="Generiere zuerst ein Template">
-                    <span id="copyButtonText">📋 Kopieren</span>
-                </button>
-            </div>
-        </form>
-
-        <div class="output-container" id="outputContainer" style="display: none;">
-            <h2>Vorschau</h2>
-            <pre id="outputCode"></pre>
+            <button class="share-button" id="facebook-share">
+                📘 Auf Facebook teilen
+            </button>
+            
+            <button class="share-button" id="native-share" style="display: none;">
+                📤 Teilen
+            </button>
         </div>
     </div>
-    
-    <script>
-        function generateTemplate() {
-            const eventName = document.getElementById('eventName').value.trim() || 'Nicht angegeben';
-            const date = document.getElementById('date').value.trim() || 'Nicht angegeben';
-            const location = document.getElementById('location').value.trim() || 'Nicht angegeben';
-            const lineup = document.getElementById('lineup').value.trim() || 'Nicht angegeben';
-            const ticketLink = document.getElementById('ticketLink').value.trim();
-            const description = document.getElementById('description').value.trim();
-    
-            let template = `🚀 **${eventName}**\n`;
-            template += `\n📅 **Datum & Zeit:**\n${date}`;
-            template += `\n📍 **Ort:**\n${location}`;
-            
-            if (lineup !== 'Nicht angegeben') {
-                template += `\n\n🎶 **Line-up:**\n${lineup}`;
-            }
-            
-            if (description) {
-                template += `\n\n📝 **Beschreibung:**\n${description}`;
-            }
-            
-            if (ticketLink) {
-                template += `\n\n🎟️ **Tickets:**\n${ticketLink}`;
-            }
-    
-            document.getElementById('outputCode').textContent = template;
-            document.getElementById('outputContainer').style.display = 'block';
-            
-            // Button aktivieren
-            const copyButton = document.getElementById('copyButton');
-            copyButton.classList.add('active');
-            copyButton.style.cursor = 'pointer';
-            copyButton.title = 'Template in Zwischenablage kopieren';
+</div>
+
+<script>
+    function generateTemplate() {
+        const eventName = document.getElementById('eventName').value.trim() || 'Nicht angegeben';
+        const date = document.getElementById('date').value.trim() || 'Nicht angegeben';
+        const location = document.getElementById('location').value.trim() || 'Nicht angegeben';
+        const lineup = document.getElementById('lineup').value.trim() || 'Nicht angegeben';
+        const ticketLink = document.getElementById('ticketLink').value.trim();
+        const description = document.getElementById('description').value.trim();
+
+        let template = `🚀 **${eventName}**\n`;
+        template += `\n📅 **Datum & Zeit:**\n${date}`;
+        template += `\n\n📍 **Ort:**\n${location}`;
+        template += `\n\n🎧 **Line-up:**\n${lineup}`;
+        if (ticketLink) {
+            template += `\n\n🎟️ **Tickets:**\n${ticketLink}`;
+        }
+        if (description) {
+            template += `\n\n✨ **Über das Event:**\n${description}`;
+        }
+
+        const outputCode = document.getElementById('outputCode');
+        const outputContainer = document.getElementById('outputContainer');
+        const copyButton = document.querySelector('button[onclick="copyToClipboard()"]');
+
+        outputCode.textContent = template;
+        outputContainer.style.display = 'block';
+        copyButton.style.display = 'inline-block';
+
+        // Die Share-Logik aktualisieren
+        updateShareContent({
+            title: eventName,
+            description: description
+        });
+    }
+
+    // Neue Share-Integration-Logik
+    function initializeSharing() {
+        if (navigator.share) {
+            document.getElementById('native-share').style.display = 'inline-flex';
         }
         
-        function copyCode() {
-            const copyButton = document.getElementById('copyButton');
-            const buttonText = document.getElementById('copyButtonText');
-            const outputCode = document.getElementById('outputCode').textContent;
-            
-            // Prüfe ob Button aktiv ist
-            if (!copyButton.classList.contains('active')) {
-                showToast('⚠️ Generiere zuerst ein Template!', 'warning');
-                return;
-            }
-            
-            // Kopiervorgang starten
-            copyButton.classList.add('copying');
-            buttonText.textContent = '⏳ Kopiere...';
-            
-            navigator.clipboard.writeText(outputCode).then(() => {
-                // Erfolg
-                copyButton.classList.remove('copying');
-                copyButton.classList.add('success');
-                buttonText.textContent = '✅ Kopiert!';
-                
-                showToast('🎉 Template erfolgreich kopiert!', 'success');
-                
-                // Nach 2 Sekunden zurücksetzen
-                setTimeout(() => {
-                    copyButton.classList.remove('success');
-                    buttonText.textContent = '📋 Kopieren';
-                }, 2000);
-                
-            }).catch(err => {
-                // Fehler
-                copyButton.classList.remove('copying');
-                buttonText.textContent = '❌ Fehler';
-                showToast('💥 Kopieren fehlgeschlagen!', 'error');
-                
-                setTimeout(() => {
-                    buttonText.textContent = '📋 Kopieren';
-                }, 2000);
-                
-                console.error('Fehler beim Kopieren: ', err);
-            });
-        }
+        document.getElementById('copy-share').addEventListener('click', () => copyToClipboard());
+        document.getElementById('facebook-share').addEventListener('click', () => shareToFacebook());
+        document.getElementById('native-share').addEventListener('click', () => nativeShare());
+    }
     
-        function showToast(message, type) {
-            // Entferne vorhandene Toasts
-            const existingToast = document.querySelector('.success-toast');
-            if (existingToast)
- {
-                existingToast.remove();
-            }
-            
-            // Erstelle neuen Toast
-            const toast = document.createElement('div');
-            toast.className = 'success-toast';
-            toast.textContent = message;
-            
-            if (type === 'warning') {
-                toast.style.background = 'linear-gradient(45deg, #ff6b35, #f7931e)';
-            } else if (type === 'error') {
-                toast.style.background = 'linear-gradient(45deg, #ff1744, #d50000)';
-            }
-            
-            document.body.appendChild(toast);
-            
-            // Animation
-            setTimeout(() => toast.classList.add('show'), 100);
-            
-            // Automatisch entfernen
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
+    async function copyToClipboard() {
+        const templateCode = document.getElementById('outputCode').textContent;
+        try {
+            await navigator.clipboard.writeText(templateCode);
+            showMessage('Template in die Zwischenablage kopiert!', 'success');
+        } catch (err) {
+            fallbackCopyToClipboard(templateCode);
         }
-    </script>
-</body>
-</html>
+    }
+    
+    function shareToFacebook() {
+        const shareData = getShareData();
+        const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareData.url)}`;
+        
+        const popup = window.open(facebookUrl, 'facebookShare', 'width=600,height=400');
+        if (!popup) {
+            window.open(facebookUrl, '_blank');
+        }
+        showMessage('Öffne Facebook-Dialog...', 'info');
+    }
+    
+    async function nativeShare() {
+        const shareData = getShareData();
+        if (!navigator.share) {
+             copyToClipboard();
+             return;
+        }
+
+        try {
+            await navigator.share({
+                title: shareData.title,
+                url: shareData.url,
+                text: document.getElementById('outputCode').textContent
+            });
+        } catch (err) {
+            if (err.name !== 'AbortError') {
+                copyToClipboard();
+            }
+        }
+    }
+    
+    function getShareData() {
+        return {
+            url: window.location.href,
+            title: document.getElementById('eventName').value.trim() || 'Generiertes Event | Psy-Nexus',
+            description: document.getElementById('description').value.trim() || 'Event erstellt mit dem Psy-Nexus Tool'
+        };
+    }
+    
+    function fallbackCopyToClipboard(text) {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        
+        try {
+            document.execCommand('copy');
+            showMessage('Link in die Zwischenablage kopiert!', 'success');
+        } catch (err) {
+            showMessage('Kopieren fehlgeschlagen. Bitte manuell
