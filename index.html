@@ -142,7 +142,7 @@
             text-align: center;
             padding: 20px;
             background: rgba(24, 119, 242, 0.05);
-            border: 1px solid rgba(24, 119, 242, 0.3); /* Angepasst für WCAG-Konformität */
+            border: 1px solid rgba(24, 119, 242, 0.3);
             border-radius: 12px;
             backdrop-filter: blur(10px);
         }
@@ -280,70 +280,35 @@
             }
         }
 
-        /* Mobile Responsiveness */
+        /* Responsive Design Media Queries */
         @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            input[type="text"], input[type="url"], textarea {
+                font-size: 14px;
+            }
             .facebook-share-btn {
                 width: 100%;
                 min-width: auto;
                 padding: 16px 20px;
                 font-size: 16px;
             }
-            
             .share-section {
                 padding: 16px;
                 margin: 16px 0;
             }
-            
             .toast-notification {
                 right: 10px;
                 left: 10px;
                 transform: translateY(-100px);
             }
-            
             .toast-notification.show {
                 transform: translateY(0);
             }
-            
             .toast-content {
                 min-width: auto;
                 width: 100%;
-            }
-        }
-
-        /* Dark Theme Optimizations */
-        @media (prefers-color-scheme: dark) {
-            .share-section {
-                background: rgba(24, 119, 242, 0.08);
-                border-color: rgba(24, 119, 242, 0.2);
-            }
-            
-            .share-title {
-                color: #f1f5f9;
-            }
-        }
-
-        /* High Contrast Mode Support */
-        @media (prefers-contrast: high) {
-            .facebook-share-btn {
-                border: 2px solid #ffffff;
-            }
-            
-            .share-section {
-                border: 2px solid rgba(24, 119, 242, 0.5);
-            }
-        }
-
-        /* Reduce Motion for Accessibility */
-        @media (prefers-reduced-motion: reduce) {
-            .facebook-share-btn,
-            .toast-notification,
-            .facebook-share-container {
-                animation: none;
-                transition: none;
-            }
-            
-            .facebook-share-btn:hover {
-                transform: none;
             }
         }
     </style>
@@ -421,7 +386,7 @@
             <button 
                 class="facebook-share-btn" 
                 id="facebookShareBtn"
-                onclick="shareOnFacebook()"
+                onclick="copyAndShareOnFacebook()"
                 aria-label="Event-Template auf Facebook teilen"
                 title="Event auf Facebook teilen">
                 <span class="fb-icon">
@@ -451,7 +416,6 @@
 </div>
 
 <script>
-    // Funktion, die den HTML-Code dynamisch aktualisiert, sobald der Nutzer tippt
     function updateTemplate() {
         const eventName = document.getElementById('eventName').value.trim() || '';
         const date = document.getElementById('date').value.trim() || '';
@@ -502,10 +466,9 @@
         }
     }
 
-    // Angepasste copyCode-Funktion mit Fallback
     function copyCode() {
         const text = document.getElementById('outputCode').textContent;
-        if (!navigator.clipboard) { // http oder alte Browser
+        if (!navigator.clipboard) {
             const ta = document.createElement('textarea');
             ta.value = text;
             document.body.appendChild(ta);
@@ -520,14 +483,24 @@
             .catch(() => showToast('Kopieren fehlgeschlagen.', 'error'));
     }
 
-    // Angepasste shareOnFacebook-Funktion mit Share-Dialog und URL-basierter Lösung
-    function shareOnFacebook() {
-        const text = document.getElementById('outputCode').textContent;
-        const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}&quote=${encodeURIComponent(text)}`;
+    // Neue Funktion, die kopiert und dann zum Teilen auffordert
+    function copyAndShareOnFacebook() {
+        const textToCopy = document.getElementById('outputCode').textContent;
         
-        window.open(shareUrl, '_blank');
-        
-        showToast('Facebook-Dialog geöffnet!', 'success');
+        // Erst kopieren
+        navigator.clipboard.writeText(textToCopy)
+            .then(() => {
+                showToast('Template in die Zwischenablage kopiert. Jetzt auf Facebook einfügen!', 'success');
+                
+                // Dann den Share-Dialog öffnen
+                setTimeout(() => {
+                    const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`;
+                    window.open(shareUrl, '_blank');
+                }, 1000);
+            })
+            .catch(() => {
+                showToast('Kopieren fehlgeschlagen. Bitte manuell kopieren und einfügen.', 'error');
+            });
     }
 
     function showToast(message, type = 'success') {
@@ -535,14 +508,11 @@
         const content = toast.querySelector('.toast-content');
         const messageSpan = toast.querySelector('.toast-message');
         
-        // Set message and type
         messageSpan.textContent = message;
         content.className = `toast-content ${type}`;
         
-        // Show toast
         toast.classList.add('show');
         
-        // Auto-hide after 4 seconds
         setTimeout(() => {
             toast.classList.remove('show');
         }, 4000);
