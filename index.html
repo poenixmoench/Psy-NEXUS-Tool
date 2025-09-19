@@ -381,27 +381,27 @@
 
     <div class="form-group">
         <label for="eventName">Event-Name</label>
-        <input type="text" id="eventName" placeholder="z.B. Cosmic Frequencies" onkeyup="generateTemplate()">
+        <input type="text" id="eventName" placeholder="z.B. Cosmic Frequencies" onkeyup="updateTemplate()">
     </div>
     <div class="form-group">
         <label for="date">Datum & Zeit</label>
-        <input type="text" id="date" placeholder="z.B. Sa, 12. Okt. | 22:00 - 06:00" onkeyup="generateTemplate()">
+        <input type="text" id="date" placeholder="z.B. Sa, 12. Okt. | 22:00 - 06:00" onkeyup="updateTemplate()">
     </div>
     <div class="form-group">
         <label for="location">Ort</label>
-        <input type="text" id="location" placeholder="z.B. Club XYZ, Berlin" onkeyup="generateTemplate()">
+        <input type="text" id="location" placeholder="z.B. Club XYZ, Berlin" onkeyup="updateTemplate()">
     </div>
     <div class="form-group">
         <label for="lineup">Line-up</label>
-        <textarea id="lineup" rows="3" placeholder="z.B. • Psy-Fi (Live)&#10;• Alien Sapiens (DJ Set)&#10;• Solar Frequencies" onkeyup="generateTemplate()"></textarea>
+        <textarea id="lineup" rows="3" placeholder="z.B. • Psy-Fi (Live)&#10;• Alien Sapiens (DJ Set)&#10;• Solar Frequencies" onkeyup="updateTemplate()"></textarea>
     </div>
     <div class="form-group">
         <label for="ticketLink">Ticket-Link (optional)</label>
-        <input type="url" id="ticketLink" placeholder="https://www.eventlink.de" onkeyup="generateTemplate()">
+        <input type="url" id="ticketLink" placeholder="https://www.eventlink.de" onkeyup="updateTemplate()">
     </div>
     <div class="form-group">
         <label for="description">Beschreibung (optional)</label>
-        <textarea id="description" rows="4" placeholder="Eine kurze Beschreibung des Events." onkeyup="generateTemplate()"></textarea>
+        <textarea id="description" rows="4" placeholder="Eine kurze Beschreibung des Events." onkeyup="updateTemplate()"></textarea>
     </div>
 
     <div class="button-group">
@@ -451,7 +451,8 @@
 </div>
 
 <script>
-    function generateTemplate() {
+    // Funktion, die den HTML-Code dynamisch aktualisiert, sobald der Nutzer tippt
+    function updateTemplate() {
         const eventName = document.getElementById('eventName').value.trim() || '';
         const date = document.getElementById('date').value.trim() || '';
         const location = document.getElementById('location').value.trim() || '';
@@ -546,6 +547,14 @@
             toast.classList.remove('show');
         }, 4000);
     }
+
+    // Verknüpfung der onkeyup-Ereignisse mit der neuen Funktion
+    document.getElementById('eventName').onkeyup = updateTemplate;
+    document.getElementById('date').onkeyup = updateTemplate;
+    document.getElementById('location').onkeyup = updateTemplate;
+    document.getElementById('lineup').onkeyup = updateTemplate;
+    document.getElementById('ticketLink').onkeyup = updateTemplate;
+    document.getElementById('description').onkeyup = updateTemplate;
 </script>
 </body>
 </html>
