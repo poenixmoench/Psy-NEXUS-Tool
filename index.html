@@ -440,10 +440,6 @@
                     </svg>
                 </span>
             </button>
-            <p style="font-size: 12px; color: #aaa; margin-top: 8px;">
-                Tipp: Unter iOS kannst du den Text vorab kopieren →
-                <a href="#" onclick="copyCode(); return false;">hier klicken</a>.
-            </p>
         </div>
     </div>
 
@@ -529,28 +525,18 @@
         }
     }
 
-    // Angepasste shareOnFacebook-Funktion mit Share-Dialog
+    // Angepasste shareOnFacebook-Funktion mit Share-Dialog und URL-basierter Lösung
     function shareOnFacebook() {
         const text = document.getElementById('outputCode').textContent;
-        if (typeof FB === 'undefined') {
-            showToast('Facebook SDK nicht geladen.', 'error');
-            return;
-        }
-        FB.ui(
-            {
-                method: 'share',
-                href: window.location.href,
-                quote: text
-            },
-            function (res) {
-                if (res && !res.error_message) {
-                    showToast('Geteilt!', 'success');
-                } else {
-                    showToast('Teilen abgebrochen.', 'error');
-                }
-            }
-        );
+        const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}&quote=${encodeURIComponent(text)}`;
+        
+        window.open(shareUrl, '_blank');
+        
+        // Da wir das Feedback von Facebook nicht direkt bekommen, 
+        // gehen wir davon aus, dass es erfolgreich war.
+        showToast('Facebook-Dialog geöffnet!', 'success');
     }
+
 
     function showToast(message, type = 'success') {
         const toast = document.getElementById('toastNotification');
