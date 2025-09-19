@@ -405,7 +405,6 @@
     </div>
 
     <div class="button-group">
-        <button class="button" onclick="generateTemplate()">Template generieren</button>
         <button class="button" onclick="copyCode()" style="display: none;">Kopieren</button>
     </div>
 
@@ -453,24 +452,29 @@
 
 <script>
     function generateTemplate() {
-        const eventName = document.getElementById('eventName').value.trim() || 'Nicht angegeben';
-        const date = document.getElementById('date').value.trim() || 'Nicht angegeben';
-        const location = document.getElementById('location').value.trim() || 'Nicht angegeben';
-        const lineup = document.getElementById('lineup').value.trim() || 'Nicht angegeben';
-        const ticketLink = document.getElementById('ticketLink').value.trim();
-        const description = document.getElementById('description').value.trim();
+        const eventName = document.getElementById('eventName').value.trim() || '';
+        const date = document.getElementById('date').value.trim() || '';
+        const location = document.getElementById('location').value.trim() || '';
+        const lineup = document.getElementById('lineup').value.trim() || '';
+        const ticketLink = document.getElementById('ticketLink').value.trim() || '';
+        const description = document.getElementById('description').value.trim() || '';
 
-        let template = `🚀 **${eventName}**\n`;
-        template += `\n📅 **Datum & Zeit:**\n${date}`;
-        template += `\n\n📍 **Ort:**\n${location}`;
-        template += `\n\n🎧 **Line-up:**\n${lineup}`;
+        const hasContent = eventName || date || location || lineup || ticketLink || description;
 
-        if (description) {
-            template += `\n\n📝 **Über das Event:**\n${description}`;
-        }
+        let template = '';
+        if (hasContent) {
+            template += `🚀 **${eventName || 'Nicht angegeben'}**\n`;
+            template += `\n📅 **Datum & Zeit:**\n${date || 'Nicht angegeben'}`;
+            template += `\n\n📍 **Ort:**\n${location || 'Nicht angegeben'}`;
+            template += `\n\n🎧 **Line-up:**\n${lineup || 'Nicht angegeben'}`;
 
-        if (ticketLink) {
-            template += `\n\n🎟️ **Tickets:**\n${ticketLink}`;
+            if (description) {
+                template += `\n\n📝 **Über das Event:**\n${description}`;
+            }
+
+            if (ticketLink) {
+                template += `\n\n🎟️ **Tickets:**\n${ticketLink}`;
+            }
         }
 
         const outputCode = document.getElementById('outputCode');
@@ -478,15 +482,22 @@
 
         const outputContainer = document.getElementById('outputContainer');
         const copyButton = document.querySelector('.button[onclick="copyCode()"]');
+        const facebookShareContainer = document.getElementById('facebookShareContainer');
 
-        if (eventName || date || location || lineup || ticketLink || description) {
+        if (hasContent) {
             outputContainer.style.display = 'block';
             copyButton.style.display = 'inline-block';
-            showFacebookShareButton(); // Zeigt den Facebook-Button
+            facebookShareContainer.style.display = 'block';
+            setTimeout(() => {
+                outputContainer.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'nearest' 
+                });
+            }, 500);
         } else {
             outputContainer.style.display = 'none';
             copyButton.style.display = 'none';
-            document.getElementById('facebookShareContainer').style.display = 'none'; // Versteckt den Facebook-Button
+            facebookShareContainer.style.display = 'none';
         }
     }
 
@@ -508,23 +519,6 @@
             .catch(() => showToast('Kopieren fehlgeschlagen.', 'error'));
     }
 
-    // =========================
-    // FACEBOOK SHARE FUNCTIONALITY
-    // =========================
-
-    function showFacebookShareButton() {
-        const shareContainer = document.getElementById('facebookShareContainer');
-        if (shareContainer) {
-            shareContainer.style.display = 'block';
-            setTimeout(() => {
-                shareContainer.scrollIntoView({ 
-                    behavior: 'smooth', 
-                    block: 'nearest' 
-                });
-            }, 500);
-        }
-    }
-
     // Angepasste shareOnFacebook-Funktion mit Share-Dialog und URL-basierter Lösung
     function shareOnFacebook() {
         const text = document.getElementById('outputCode').textContent;
@@ -532,11 +526,8 @@
         
         window.open(shareUrl, '_blank');
         
-        // Da wir das Feedback von Facebook nicht direkt bekommen, 
-        // gehen wir davon aus, dass es erfolgreich war.
         showToast('Facebook-Dialog geöffnet!', 'success');
     }
-
 
     function showToast(message, type = 'success') {
         const toast = document.getElementById('toastNotification');
@@ -555,7 +546,6 @@
             toast.classList.remove('show');
         }, 4000);
     }
-
 </script>
 </body>
 </html>
