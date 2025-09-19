@@ -3,7 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Psy-Nexus Template-Tool</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="cache-control" content="max-age=0">
+    <title>Psy-Nexus Template-Tool v2.1</title>
     <style>
         /* Allgemeine Stile für den Body */
         body {
@@ -311,6 +315,27 @@
                 width: 100%;
             }
         }
+        
+        /* NOTFALL-VERSTECK-REGEL: Garantiert, dass kein "Template generieren"-Button sichtbar ist */
+        button[onclick*="generateTemplate"],
+        .button[onclick*="generateTemplate"],
+        *[onclick*="generateTemplate"] {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            position: absolute !important;
+            left: -9999px !important;
+            height: 0 !important;
+            width: 0 !important;
+        }
+        
+        /* Spezifische Regel für Galaxy Tab Pro und andere Android-Tablets */
+        @media screen and (min-width: 800px) and (max-width: 1280px) {
+            button[onclick*="generateTemplate"] {
+                display: none !important;
+            }
+        }
+
     </style>
     <meta property="og:title" content="Psy-NEXUS Template Generator - Event Templates">
     <meta property="og:description" content="Erstelle professionelle Event-Ankündigungen für Telegram, Discord & WhatsApp mit dem Psy-NEXUS Template Generator.">
@@ -483,23 +508,54 @@
             .catch(() => showToast('Kopieren fehlgeschlagen.', 'error'));
     }
 
-    // Neue Funktion, die kopiert und dann zum Teilen auffordert
+    // Neue, verbesserte Funktion, die kopiert und dann zum Teilen auffordert
     function copyAndShareOnFacebook() {
         const textToCopy = document.getElementById('outputCode').textContent;
+        const shareBtn = document.getElementById('facebookShareBtn');
         
-        // Erst kopieren
+        // Button auf Loading setzen
+        shareBtn.classList.add('loading');
+        shareBtn.disabled = true;
+        
+        // Text kopieren
         navigator.clipboard.writeText(textToCopy)
             .then(() => {
-                showToast('Template in die Zwischenablage kopiert. Jetzt auf Facebook einfügen!', 'success');
+                showToast('✅ Template kopiert! Facebook öffnet sich - einfach einfügen (Strg+V)', 'success');
                 
-                // Dann den Share-Dialog öffnen
+                // Erweiterte Share-URL mit Metadaten
+                const shareUrl = new URL('https://www.facebook.com/sharer/sharer.php');
+                shareUrl.searchParams.set('u', window.location.href);
+                shareUrl.searchParams.set('quote', 'Schau dir dieses Event an:');
+                shareUrl.searchParams.set('hashtag', '#PsyNexus');
+                
+                // Facebook-Dialog öffnen
                 setTimeout(() => {
-                    const shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`;
-                    window.open(shareUrl, '_blank');
-                }, 1000);
+                    const popup = window.open(
+                        shareUrl.toString(),
+                        'facebook-share-dialog',
+                        'width=626,height=436,resizable=yes,scrollbars=yes'
+                    );
+                    
+                    // Button nach 3 Sekunden zurücksetzen
+                    setTimeout(() => {
+                        shareBtn.classList.remove('loading');
+                        shareBtn.disabled = false;
+                    }, 3000);
+                    
+                    // Überwache, ob Popup geschlossen wurde
+                    const checkClosed = setInterval(() => {
+                        if (popup.closed) {
+                            clearInterval(checkClosed);
+                            showToast('💡 Tipp: Der kopierte Text ist noch in deiner Zwischenablage!', 'success');
+                        }
+                    }, 1000);
+                    
+                }, 1500);
             })
             .catch(() => {
-                showToast('Kopieren fehlgeschlagen. Bitte manuell kopieren und einfügen.', 'error');
+                shareBtn.classList.remove('loading');
+                shareBtn.disabled = false;
+                showToast('❌ Kopieren fehlgeschlagen. Bitte Text manuell markieren und kopieren.', 'error');
             });
     }
 
