@@ -352,6 +352,13 @@
           xfbml: true,
           version: 'v18.0'
         });
+        
+        // Prüfen ob User bereits eingeloggt ist
+        FB.getLoginStatus(function(response) {
+          if (response.status === 'connected') {
+            console.log('Bereits mit Facebook verbunden');
+          }
+        });
       };
     
       (function(d, s, id) {
@@ -411,7 +418,6 @@
             <button 
                 class="facebook-share-btn" 
                 id="facebookShareBtn"
-                onclick="copyAndShareOnFacebook()"
                 aria-label="Event-Template auf Facebook teilen"
                 title="Event auf Facebook teilen">
                 <span class="fb-icon">
@@ -508,55 +514,67 @@
             .catch(() => showToast('Kopieren fehlgeschlagen.', 'error'));
     }
 
-    // Neue, verbesserte Funktion, die kopiert und dann zum Teilen auffordert
-    function copyAndShareOnFacebook() {
-        const textToCopy = document.getElementById('outputCode').textContent;
-        const shareBtn = document.getElementById('facebookShareBtn');
+    // Vollautomatische Facebook-Share-Funktion
+    function shareOnFacebook() {
+        const btn = document.getElementById('facebookShareBtn');
+        const originalText = btn.querySelector('.btn-text').textContent;
         
-        // Button auf Loading setzen
-        shareBtn.classList.add('loading');
-        shareBtn.disabled = true;
+        // Button in Loading-Zustand versetzen
+        btn.classList.add('loading');
+        btn.disabled = true;
+        btn.querySelector('.btn-text').textContent = 'Wird vorbereitet...';
         
-        // Text kopieren
-        navigator.clipboard.writeText(textToCopy)
-            .then(() => {
-                showToast('✅ Template kopiert! Facebook öffnet sich - einfach einfügen (Strg+V)', 'success');
+        const textToShare = document.getElementById('outputCode').textContent;
+        
+        // Prüfen ob User eingeloggt ist
+        FB.getLoginStatus(function(response) {
+            if (response.status === 'connected') {
+                // User ist bereits eingeloggt - direkt posten
+                postToFacebook(response.authResponse.accessToken, textToShare, btn, originalText);
+            } else {
+                // User einloggen
+                FB.login(function(loginResponse) {
+                    if (loginResponse.status === 'connected') {
+                        postToFacebook(loginResponse.authResponse.accessToken, textToShare, btn, originalText);
+                    } else {
+                        // User hat Login abgebrochen
+                        resetButton(btn, originalText);
+                        showToast('Facebook-Login abgebrochen.', 'error');
+                    }
+                }, {scope: 'publish_to_groups,user_posts'});
+            }
+        });
+    }
+
+    // Hilfsfunktion zum Posten auf Facebook
+    function postToFacebook(accessToken, message, btn, originalText) {
+        btn.querySelector('.btn-text').textContent = 'Wird gepostet...';
+        
+        FB.api('/me/feed', 'POST', {
+            message: message,
+            access_token: accessToken
+        }, function(response) {
+            if (!response || response.error) {
+                // Fehlerbehandlung
+                console.error('Facebook Post Error:', response.error);
+                resetButton(btn, originalText);
+                showToast('Fehler beim Posten: ' + (response.error ? response.error.message : 'Unbekannter Fehler'), 'error');
+            } else {
+                // Erfolg
+                resetButton(btn, originalText);
+                showToast('Event erfolgreich auf Facebook gepostet!', 'success');
                 
-                // Erweiterte Share-URL mit Metadaten
-                const shareUrl = new URL('https://www.facebook.com/sharer/sharer.php');
-                shareUrl.searchParams.set('u', window.location.href);
-                shareUrl.searchParams.set('quote', 'Schau dir dieses Event an:');
-                shareUrl.searchParams.set('hashtag', '#PsyNexus');
-                
-                // Facebook-Dialog öffnen
-                setTimeout(() => {
-                    const popup = window.open(
-                        shareUrl.toString(),
-                        'facebook-share-dialog',
-                        'width=626,height=436,resizable=yes,scrollbars=yes'
-                    );
-                    
-                    // Button nach 3 Sekunden zurücksetzen
-                    setTimeout(() => {
-                        shareBtn.classList.remove('loading');
-                        shareBtn.disabled = false;
-                    }, 3000);
-                    
-                    // Überwache, ob Popup geschlossen wurde
-                    const checkClosed = setInterval(() => {
-                        if (popup.closed) {
-                            clearInterval(checkClosed);
-                            showToast('💡 Tipp: Der kopierte Text ist noch in deiner Zwischenablage!', 'success');
-                        }
-                    }, 1000);
-                    
-                }, 1500);
-            })
-            .catch(() => {
-                shareBtn.classList.remove('loading');
-                shareBtn.disabled = false;
-                showToast('❌ Kopieren fehlgeschlagen. Bitte Text manuell markieren und kopieren.', 'error');
-            });
+                // Post-ID für spätere Referenz speichern (optional)
+                localStorage.setItem('lastFacebookPostId', response.id);
+            }
+        });
+    }
+
+    // Button zurücksetzen
+    function resetButton(btn, originalText) {
+        btn.classList.remove('loading');
+        btn.disabled = false;
+        btn.querySelector('.btn-text').textContent = originalText;
     }
 
     function showToast(message, type = 'success') {
@@ -573,6 +591,30 @@
             toast.classList.remove('show');
         }, 4000);
     }
+
+    // Event-Listener für den Facebook-Button
+    document.addEventListener('DOMContentLoaded', function() {
+        const facebookShareBtn = document.getElementById('facebookShareBtn');
+        if (facebookShareBtn) {
+            facebookShareBtn.addEventListener('click', shareOnFacebook);
+        }
+        
+        // Service-Worker-Cache bereinigen (falls vorhanden)
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) {
+                    registration.unregister();
+                }
+            });
+        }
+        
+        // Browser-Cache umgehen
+        window.addEventListener('load', function() {
+            if (window.location.search.indexOf('reload=true') === -1) {
+                window.location.search += '&reload=true';
+            }
+        });
+    });
 </script>
 </body>
 </html>
