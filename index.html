@@ -8,31 +8,6 @@
     <meta http-equiv="Expires" content="0">
     <meta name="cache-control" content="max-age=0">
     <title>Psy-Nexus Template-Tool v2.1</title>
-    
-    <script>
-    // Nur für Samsung/Android Browser ausführen
-    if (navigator.userAgent.includes('Samsung') || 
-        navigator.userAgent.includes('Android')) {
-        
-        // Prüfen ob bereits Cache-Busting-Parameter vorhanden
-        const url = new URL(window.location);
-        if (!url.searchParams.has('nocache')) {
-            // Neuladen mit Cache-Busting-Parameter
-            url.searchParams.set('nocache', Date.now());
-            window.location.href = url.toString();
-        }
-        
-        // Service Worker komplett entfernen
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                registrations.forEach(function(registration) {
-                    registration.unregister();
-                });
-            });
-        }
-    }
-    </script>
-
     <style>
         /* Allgemeine Stile für den Body */
         body {
@@ -209,7 +184,7 @@
 
         .facebook-share-btn:hover {
             background: linear-gradient(135deg, #166FE5 0%, #1464CC 100%);
-            transform: translateY(-2px);
+            transform: scale(1.05);
             box-shadow: 
                 0 8px 25px rgba(24, 119, 242, 0.4),
                 0 4px 8px rgba(0, 0, 0, 0.15);
