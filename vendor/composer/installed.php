@@ -1,13 +1,13 @@
 <?php return array(
     'root' => array(
         'name' => 'psy-nexus/app',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => '30a95769a5a3461d59148ec4c12e838c9228167c',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'dev' => true,
+        'dev' => false,
     ),
     'versions' => array(
         'fig/http-message-util' => array(
@@ -172,9 +172,9 @@
             'dev_requirement' => false,
         ),
         'psy-nexus/app' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '30a95769a5a3461d59148ec4c12e838c9228167c',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
