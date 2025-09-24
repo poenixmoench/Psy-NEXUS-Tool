@@ -1,0 +1,16 @@
+{
+    "require": {
+        "slim/slim": "4.*",
+        "slim/psr7": "1.*",
+        "illuminate/database": "8.x",
+        "illuminate/events": "8.x",
+        "illuminate/pagination": "8.x",
+        "illuminate/container": "8.x",
+        "php-di/php-di": "^7.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "PsyNexus\\": "src/"
+        }
+    }
+}
