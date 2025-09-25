@@ -35,6 +35,7 @@
         }
 
         p {
+            /* Das p-Styling bleibt, falls die Unterzeile wieder eingefügt wird */
             text-align: center;
             color: #e0e0e0;
             font-size: 1.1rem;
@@ -203,8 +204,12 @@
     <input type="text" id="eventName" onkeyup="scheduleGenerate()" maxlength="200">
 </div>
 <div class="form-group">
-    <label for="date">Datum & Zeit</label>
-    <input type="text" id="date" onkeyup="scheduleGenerate()" maxlength="200">
+    <label for="dateField">Datum</label>
+    <input type="text" id="dateField" onkeyup="scheduleGenerate()" maxlength="100">
+</div>
+<div class="form-group">
+    <label for="timeField">Zeit</label>
+    <input type="text" id="timeField" onkeyup="scheduleGenerate()" maxlength="100">
 </div>
 <div class="form-group">
     <label for="location">Ort</label>
@@ -215,12 +220,12 @@
     <textarea id="lineup" rows="3" onkeyup="scheduleGenerate()" maxlength="200"></textarea>
 </div>
 <div class="form-group">
-    <label for="ticketLink">Ticket-Link</label>
-    <input type="url" id="ticketLink" onkeyup="scheduleGenerate()" maxlength="500">
-</div>
-<div class="form-group">
     <label for="description">Beschreibung</label>
     <textarea id="description" rows="4" onkeyup="scheduleGenerate()" maxlength="300"></textarea>
+</div>
+<div class="form-group">
+    <label for="ticketLink">Ticket-Link</label>
+    <input type="url" id="ticketLink" onkeyup="scheduleGenerate()" maxlength="500">
 </div>
 
 <div class="button-group">
@@ -250,11 +255,12 @@
     function validateInputs() {
         const inputs = {
             'Event-Name': { element: document.getElementById('eventName'), maxLength: 200 },
-            'Datum & Zeit': { element: document.getElementById('date'), maxLength: 200 },
+            'Datum': { element: document.getElementById('dateField'), maxLength: 100 },
+            'Zeit': { element: document.getElementById('timeField'), maxLength: 100 },
             'Ort': { element: document.getElementById('location'), maxLength: 200 },
             'Line-up': { element: document.getElementById('lineup'), maxLength: 200 },
-            'Ticket-Link': { element: document.getElementById('ticketLink'), maxLength: 500 },
-            'Beschreibung': { element: document.getElementById('description'), maxLength: 300 }
+            'Beschreibung': { element: document.getElementById('description'), maxLength: 300 },
+            'Ticket-Link': { element: document.getElementById('ticketLink'), maxLength: 500 }
         };
         
         // Alle Error-Styles zurücksetzen
@@ -329,21 +335,36 @@
         if (!validateInputs()) {
             return; // Abbruch bei Validierungsfehlern
         }
-
+        
+        // FELDER AUSLESEN
         const eventName = document.getElementById('eventName').value.trim() || 'Nicht angegeben';
-        const date = document.getElementById('date').value.trim() || 'Nicht angegeben';
+        const date = document.getElementById('dateField').value.trim();
+        const time = document.getElementById('timeField').value.trim();
         const location = document.getElementById('location').value.trim() || 'Nicht angegeben';
         const lineup = document.getElementById('lineup').value.trim() || 'Nicht angegeben';
-        const ticketLink = document.getElementById('ticketLink').value.trim();
         const description = document.getElementById('description').value.trim();
+        const ticketLink = document.getElementById('ticketLink').value.trim();
+        
+        // DATUM UND ZEIT ZUSAMMENFÜHREN FÜR DIE VORSCHAU
+        let dateAndTimeCombined = '';
+        if (date && time) {
+            dateAndTimeCombined = `${date} | ${time}`;
+        } else if (date) {
+            dateAndTimeCombined = date;
+        } else if (time) {
+            dateAndTimeCombined = time;
+        } else {
+            dateAndTimeCombined = 'Nicht angegeben';
+        }
 
         // EMOJI-FREIE TEMPLATE-STRUKTUR
         let template = `◆ ${eventName.toUpperCase()} ◆\n`;
         template += `\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
-        template += `\n▶ DATUM & ZEIT\n${date}`;
+        template += `\n▶ DATUM & ZEIT\n${dateAndTimeCombined}`;
         template += `\n\n▶ LOCATION\n${location}`;
         template += `\n\n▶ LINE-UP\n${lineup}`;
         
+        // Logische Reihenfolge im Template: INFO vor TICKETS
         if (description) {
             template += `\n\n▶ INFO\n${description}`;
         }
@@ -362,7 +383,8 @@
         
         // Verbesserte UX: Template immer anzeigen wenn mindestens ein Feld ausgefüllt
         const hasContent = eventName !== 'Nicht angegeben' || 
-                             date !== 'Nicht angegeben' || 
+                             date || 
+                             time || 
                              location !== 'Nicht angegeben' || 
                              lineup !== 'Nicht angegeben' ||
                              description || 
