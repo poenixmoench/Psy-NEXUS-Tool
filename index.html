@@ -1,210 +1,443 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Psy-Nexus Template-Tool</title>
-    <style>
-        /* Allgemeine Stile für den Body */
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            padding: 20px;
-            line-height: 1.6;
-            background-color: #000000;
-            color: #ffffff;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psy-Nexus Template-Tool</title>
+    
+    <style>
+        /* Nuklearer CSS-Reset - Nur Essentials mit direkten Hex-Werten */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            padding: 20px;
+            line-height: 1.6;
+            background: #0a0a0a; /* Dunkler Hintergrund erzwungen */
+            color: #ffffff;
+            min-height: 100vh;
+            margin: 0;
+        }
 
-        /* Container-Stil */
-        .container {
-            max-width: 800px;
-            margin: auto;
-            padding: 30px;
-            border-radius: 15px;
-            background-color: #1a1a1a;
-            box-shadow: 0 5px 25px rgba(255, 255, 255, 0.1);
-        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 40px;
+            border-radius: 12px;
+            background: #1a1a1a; /* Dunkelgrauer Container erzwungen */
+            border: 1px solid #333333;
+        }
 
-        /* Überschrift */
-        h1 {
-            text-align: center;
-            color: #ffffff;
-        }
+        h1 {
+            text-align: center;
+            color: #ffffff;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
 
-        /* Beschreibungstext */
-        p {
-            text-align: center;
-            color: #e0e0e0;
-        }
-        
-        /* Label */
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
-            color: #ffffff;
-        }
-        
-        /* Formularfelder */
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        input[type="text"], input[type="url"], textarea {
-            width: 100%;
-            padding: 12px;
-            box-sizing: border-box;
-            border: 1px solid #444444;
-            background-color: #2a2a2a;
-            color: #ffffff;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-        
-        input[type="text"]:focus, input[type="url"]:focus, textarea:focus {
-            outline: none;
-            border-color: #ffffff;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
-        }
+        p {
+            text-align: center;
+            color: #e0e0e0;
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #00d4ff; /* Cyan-Akzent */
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        input[type="text"], 
+        input[type="url"], 
+        textarea {
+            width: 100%;
+            padding: 15px;
+            box-sizing: border-box;
+            border: 2px solid #444444;
+            background-color: #2a2a2a;
+            color: #ffffff;
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: vertical;
+        }
+        
+        input[type="text"]:focus, 
+        input[type="url"]:focus, 
+        textarea:focus {
+            outline: none;
+            border-color: #00d4ff;
+        }
 
-        /* Button-Styles */
-        .button-group {
-            text-align: center;
-            margin-top: 30px;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-        }
-        
-        .button {
-            padding: 12px 25px;
-            border: none;
-            font-weight: bold;
-            font-size: 16px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            color: #000000;
-            background-color: #ffffff;
-        }
-        
-        .button:hover {
-            transform: scale(1.05);
-            background-color: #cccccc;
-        }
-        
-        /* Output-Container und Meldung */
-        .output-container {
-            margin-top: 40px;
-        }
-        
-        h2 {
-            color: #ffffff;
-            text-align: center;
-        }
-        
-        pre {
-            background-color: #1a1a1a;
-            color: #ffffff;
-            padding: 20px;
-            border-radius: 8px;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            position: relative;
-        }
-        
-        .success-message {
-            text-align: center;
-            margin-top: 10px;
-            color: #00ff00;
-            display: none;
-        }
-    </style>
+        .input-error {
+            border-color: #ff4444 !important;
+        }
+
+        .error-message {
+            background: #ff4444;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: center;
+            display: none;
+        }
+
+        .button-group {
+            text-align: center;
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .button {
+            padding: 15px 30px;
+            border: 2px solid #00d4ff;
+            font-weight: 600;
+            font-size: 16px;
+            border-radius: 12px;
+            cursor: pointer;
+            color: #00d4ff;
+            background: transparent;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            min-width: 150px;
+            transition: all 0.2s ease-in-out; 
+        }
+        
+        .button:hover {
+            color: #ffffff;
+            background-color: #00d4ff;
+        }
+        
+        .output-container {
+            margin-top: 50px;
+        }
+        
+        h2 {
+            color: #00d4ff;
+            text-align: center;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        pre {
+            background: #0a0a0a;
+            color: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            border: 1px solid #444444;
+            font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .success-message {
+            text-align: center;
+            margin-top: 15px;
+            color: #00ff88;
+            display: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .generating {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .reveal {
+            display: block; 
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                margin: 0;
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .button-group {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .button {
+                width: 100%;
+                max-width: 250px;
+            }
+        }
+    </style>
+    
 </head>
 <body>
 
 <div class="container">
-    <h1>Psy-Nexus Template-Generator</h1>
-    <p>Erstelle professionelle Event-Ankündigungen für Telegram, Discord & WhatsApp.</p>
+    <h1>Psy-Nexus Template-Generator</h1>
+    <p>Erstelle professionelle Event-Ankündigungen für Telegram, Discord & WhatsApp.</p>
 
-    <div class="form-group">
-        <label for="eventName">Event-Name</label>
-        <input type="text" id="eventName" placeholder="z.B. Cosmic Frequencies" onkeyup="generateTemplate()">
-    </div>
-    <div class="form-group">
-        <label for="date">Datum & Zeit</label>
-        <input type="text" id="date" placeholder="z.B. Sa, 12. Okt. | 22:00 - 06:00" onkeyup="generateTemplate()">
-    </div>
-    <div class="form-group">
-        <label for="location">Ort</label>
-        <input type="text" id="location" placeholder="z.B. Club XYZ, Berlin" onkeyup="generateTemplate()">
-        </div>
-    <div class="form-group">
-        <label for="lineup">Line-up</label>
-        <textarea id="lineup" rows="3" placeholder="z.B. • Psy-Fi (Live)&#10;• Alien Sapiens (DJ Set)&#10;• Solar Frequencies" onkeyup="generateTemplate()"></textarea>
-    </div>
-    <div class="form-group">
-        <label for="ticketLink">Ticket-Link (optional)</label>
-        <input type="url" id="ticketLink" placeholder="https://www.eventlink.de" onkeyup="generateTemplate()">
-    </div>
-    <div class="form-group">
-        <label for="description">Beschreibung (optional)</label>
-        <textarea id="description" rows="4" placeholder="Eine kurze Beschreibung des Events." onkeyup="generateTemplate()"></textarea>
-    </div>
+<div class="error-message" id="errorMessage"></div>
 
-    <div class="button-group">
-        <button class="button" onclick="generateTemplate()">Template generieren</button>
-        <button class="button" onclick="copyCode()" style="display: none;">Kopieren</button>
-    </div>
+<div class="form-group">
+    <label for="eventName">Event-Name</label>
+    <input type="text" id="eventName" onkeyup="scheduleGenerate()" maxlength="200">
+</div>
+<div class="form-group">
+    <label for="date">Datum & Zeit</label>
+    <input type="text" id="date" onkeyup="scheduleGenerate()" maxlength="200">
+</div>
+<div class="form-group">
+    <label for="location">Ort</label>
+    <input type="text" id="location" onkeyup="scheduleGenerate()" maxlength="200">
+</div>
+<div class="form-group">
+    <label for="lineup">Line-up</label>
+    <textarea id="lineup" rows="3" onkeyup="scheduleGenerate()" maxlength="200"></textarea>
+</div>
+<div class="form-group">
+    <label for="ticketLink">Ticket-Link (optional)</label>
+    <input type="url" id="ticketLink" onkeyup="scheduleGenerate()" maxlength="500">
+</div>
+<div class="form-group">
+    <label for="description">Beschreibung (optional)</label>
+    <textarea id="description" rows="4" onkeyup="scheduleGenerate()" maxlength="300"></textarea>
+</div>
 
-    <div class="output-container" id="outputContainer" style="display: none;">
-        <h2>Vorschau</h2>
-        <pre id="outputCode"></pre>
-        <p class="success-message" id="successMessage">Kopiert!</p>
-    </div>
+<div class="button-group">
+    <button class="button" onclick="generateTemplate()" id="generateBtn">Template generieren</button>
+    <button class="button" onclick="copyCode()" id="copyBtn" style="display: none;">Kopieren</button>
+</div>
+
+<div class="output-container" id="outputContainer" style="display: none;">
+    <h2>Vorschau</h2>
+    <pre id="outputCode"></pre>
+    <p class="success-message" id="successMessage">Erfolgreich kopiert!</p>
+</div>
+
 </div>
 
 <script>
-    function generateTemplate() {
-        const eventName = document.getElementById('eventName').value.trim() || 'Nicht angegeben';
-        const date = document.getElementById('date').value.trim() || 'Nicht angegeben';
-        const location = document.getElementById('location').value.trim() || 'Nicht angegeben';
-        const lineup = document.getElementById('lineup').value.trim() || 'Nicht angegeben';
-        const ticketLink = document.getElementById('ticketLink').value.trim();
-        const description = document.getElementById('description').value.trim();
+    // PERFORMANCE & ROBUSTHEIT: Debouncing und Validierung
+    let generateTimeout = null;
+    
+    // 1. Debouncing-Scheduler (300ms Verzögerung)
+    function scheduleGenerate() {
+        clearTimeout(generateTimeout);
+        generateTimeout = setTimeout(generateTemplate, 300);
+    }
 
-        let template = `🚀 **${eventName}**\n`;
-        template += `\n📅 **Datum & Zeit:**\n${date}`;
-        template += `\
-\n📍 **Ort:**\n${location}`;
-        template += `\
-\n🎶 **Line-up:**\n${lineup}`;
+    // 2. Erweiterte Input-Validierung
+    function validateInputs() {
+        const inputs = {
+            'Event-Name': { element: document.getElementById('eventName'), maxLength: 200 },
+            'Datum & Zeit': { element: document.getElementById('date'), maxLength: 200 },
+            'Ort': { element: document.getElementById('location'), maxLength: 200 },
+            'Line-up': { element: document.getElementById('lineup'), maxLength: 200 },
+            'Ticket-Link': { element: document.getElementById('ticketLink'), maxLength: 500 },
+            'Beschreibung': { element: document.getElementById('description'), maxLength: 300 }
+        };
+        
+        // Alle Error-Styles zurücksetzen
+        clearErrorStates();
+        
+        // Längenvalidierung
+        for (const [fieldName, config] of Object.entries(inputs)) {
+            const value = config.element.value.trim();
+            if (value.length > config.maxLength) {
+                showError(`Feld "${fieldName}" ist zu lang. Maximal ${config.maxLength} Zeichen erlaubt (aktuell: ${value.length}).`);
+                config.element.classList.add('input-error');
+                return false;
+            }
+        }
 
-        if (description) {
-            template += `\n\nℹ️ **Beschreibung:**\n${description}`;
-        }
+        // URL-Validierung für Ticket-Link (flexibel für reinen Text)
+        const urlPattern = /^(http|https|www\.)/i;
+        const ticketLinkElement = inputs['Ticket-Link'].element;
+        const ticketLinkValue = ticketLinkElement.value.trim();
+        
+        if (ticketLinkValue && urlPattern.test(ticketLinkValue) && !isValidUrl(ticketLinkValue)) {
+            showError('Der Ticket-Link ist nicht gültig. Bitte verwende eine vollständige URL (z.B. https://www.eventlink.ch).');
+            ticketLinkElement.classList.add('input-error');
+            return false;
+        }
 
-        if (ticketLink) {
-            template += `\n\n🎫 **Tickets:**\n[Hier klicken](${ticketLink})`;
-        }
+        return true;
+    }
 
-        document.getElementById('outputCode').textContent = template;
-        document.getElementById('outputContainer').style.display = 'block';
-        document.querySelector('.button-group button:last-child').style.display = 'inline-block';
-    }
+    // 3. URL-Validierung
+    function isValidUrl(string) {
+        try {
+            // Nur gültige URLs mit Schema erlauben
+            new URL(string.startsWith('http') ? string : 'https://' + string); 
+            return true;
+        } catch (_) {
+            return false;
+        }
+    }
 
-    function copyCode() {
-        const outputCode = document.getElementById('outputCode').textContent;
-        navigator.clipboard.writeText(outputCode).then(() => {
-            const successMessage = document.getElementById('successMessage');
-            successMessage.style.display = 'block';
-            setTimeout(() => {
-                successMessage.style.display = 'none';
-            }, 2000);
-        });
-    }
+    // 4. Error-States zurücksetzen
+    function clearErrorStates() {
+        const inputs = document.querySelectorAll('input, textarea');
+        inputs.forEach(input => input.classList.remove('input-error'));
+        hideError();
+    }
 
-    // Initial template generation on load
-    window.onload = generateTemplate;
+    // 5. Verbesserte Error-Anzeige mit UI-Element
+    function showError(message) {
+        const errorElement = document.getElementById('errorMessage');
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+        
+        // Scroll to error message
+        errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        // Auto-hide nach 8 Sekunden
+        setTimeout(hideError, 8000);
+        
+        console.error('Validation Error:', message);
+    }
+
+    // 6. Error verstecken
+    function hideError() {
+        const errorElement = document.getElementById('errorMessage');
+        errorElement.style.display = 'none';
+    }
+
+    // 7. HAUPTFUNKTION: Template-Generierung mit Validierung
+    function generateTemplate() {
+        // KRITISCH: Validierung vor Template-Generierung
+        if (!validateInputs()) {
+            return; // Abbruch bei Validierungsfehlern
+        }
+
+        const eventName = document.getElementById('eventName').value.trim() || 'Nicht angegeben';
+        const date = document.getElementById('date').value.trim() || 'Nicht angegeben';
+        const location = document.getElementById('location').value.trim() || 'Nicht angegeben';
+        const lineup = document.getElementById('lineup').value.trim() || 'Nicht angegeben';
+        const ticketLink = document.getElementById('ticketLink').value.trim();
+        const description = document.getElementById('description').value.trim();
+
+        // EMOJI-FREIE TEMPLATE-STRUKTUR
+        let template = `◆ ${eventName.toUpperCase()} ◆\n`;
+        template += `\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
+        template += `\n▶ DATUM & ZEIT\n${date}`;
+        template += `\n\n▶ LOCATION\n${location}`;
+        template += `\n\n▶ LINE-UP\n${lineup}`;
+        
+        if (description) {
+            template += `\n\n▶ INFO\n${description}`;
+        }
+
+        if (ticketLink) {
+            template += `\n\n▶ TICKETS\n${ticketLink}`;
+        }
+
+        template += `\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
+
+        document.getElementById('outputCode').textContent = template;
+        
+        const outputContainer = document.getElementById('outputContainer');
+        const copyBtn = document.getElementById('copyBtn');
+        const generateBtn = document.getElementById('generateBtn');
+        
+        // Verbesserte UX: Template immer anzeigen wenn mindestens ein Feld ausgefüllt
+        const hasContent = eventName !== 'Nicht angegeben' || 
+                             date !== 'Nicht angegeben' || 
+                             location !== 'Nicht angegeben' || 
+                             lineup !== 'Nicht angegeben' ||
+                             description || 
+                             ticketLink;
+        
+        if (hasContent) {
+            outputContainer.style.display = 'block';
+            outputContainer.classList.add('reveal');
+            copyBtn.style.display = 'inline-block';
+        } else {
+            outputContainer.style.display = 'none';
+            copyBtn.style.display = 'none';
+        }
+
+        // Visuelles Feedback für Generate-Button
+        generateBtn.textContent = 'Template aktualisiert';
+        generateBtn.style.backgroundColor = '#00ff88';
+        generateBtn.style.color = '#0a0a0a';
+        generateBtn.style.borderColor = '#00ff88';
+        
+        setTimeout(() => {
+            generateBtn.textContent = 'Template generieren';
+            generateBtn.style.backgroundColor = 'transparent';
+            generateBtn.style.color = '#00d4ff';
+            generateBtn.style.borderColor = '#00d4ff';
+        }, 1000);
+    }
+
+    // 8. Copy-Funktion
+    function copyCode() {
+        const outputCode = document.getElementById('outputCode').textContent;
+        const copyBtn = document.getElementById('copyBtn');
+        const successMessage = document.getElementById('successMessage');
+        
+        // Button Loading State
+        copyBtn.classList.add('generating');
+        copyBtn.textContent = 'Kopiere...';
+        copyBtn.style.backgroundColor = '#00d4ff';
+        copyBtn.style.color = '#0a0a0a';
+        
+        navigator.clipboard.writeText(outputCode).then(() => {
+            successMessage.style.display = 'block';
+            copyBtn.textContent = 'Kopiert!';
+            copyBtn.style.backgroundColor = '#00ff88';
+            copyBtn.style.borderColor = '#00ff88';
+            
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+                copyBtn.textContent = 'Kopieren';
+                copyBtn.style.backgroundColor = 'transparent';
+                copyBtn.style.borderColor = '#00d4ff';
+                copyBtn.style.color = '#00d4ff';
+                copyBtn.classList.remove('generating');
+            }, 2000);
+        }).catch(err => {
+            console.error('Kopieren fehlgeschlagen: ', err);
+            copyBtn.textContent = 'Fehler beim Kopieren';
+            copyBtn.style.backgroundColor = '#ff4444';
+            copyBtn.classList.remove('generating');
+            
+            setTimeout(() => {
+                copyBtn.textContent = 'Kopieren';
+                copyBtn.style.backgroundColor = 'transparent';
+                copyBtn.style.color = '#00d4ff';
+            }, 2000);
+        });
+    }
+
+    // 9. Initiales Generieren beim Laden (deaktiviert)
+    window.onload = function() {
+        // Keine automatische automatische Generierung beim Laden. Cache-Bypass-Trigger
+    };
 </script>
+
 </body>
 </html>
