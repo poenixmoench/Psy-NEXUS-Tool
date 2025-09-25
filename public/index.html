@@ -1,363 +1,565 @@
 <!DOCTYPE html>
+
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Psy-NEXUS Event Template Generator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <title>Psy-Nexus Template-Tool</title>
     <style>
+        /* CSS Custom Properties für konsistente Design-Sprache */
+        :root {
+            --primary-bg: #0a0a0a;
+            --secondary-bg: #1a1a1a;
+            --accent-bg: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #e0e0e0;
+            --text-muted: #888888;
+            --accent-color: #00d4ff;
+            --accent-glow: #00d4ff33;
+            --success-color: #00ff88;
+            --error-color: #ff4444; 
+            --border-color: #444444;
+            --border-radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+    /* Body mit verbessertem Hintergrund */
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        padding: 20px;
+        line-height: 1.6;
+        background: linear-gradient(135deg, var(--primary-bg) 0%, #1a0a2e 100%);
+        color: var(--text-primary);
+        min-height: 100vh;
+        margin: 0;
+    }
+
+    /* Container mit psychedelischen Akzenten */
+    .container {
+        max-width: 800px;
+        margin: auto;
+        padding: 40px;
+        border-radius: var(--border-radius);
+        background: linear-gradient(145deg, var(--secondary-bg), #252525);
+        box-shadow: 
+            0 8px 32px rgba(0, 212, 255, 0.15),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Subtiler animierter Hintergrund-Effekt */
+    .container::before {
+        content: '';
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+        opacity: 0.08;
+        animation: pulse 6s ease-in-out infinite alternate;
+        pointer-events: none;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(0.8) rotate(0deg); opacity: 0.05; }
+        100% { transform: scale(1.2) rotate(180deg); opacity: 0.12; }
+    }
+
+    /* Überschrift mit dezenten Glow */
+    h1 {
+        text-align: center;
+        color: var(--text-primary);
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+        font-weight: 700;
+        text-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Untertitel */
+    p {
+        text-align: center;
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+        margin-bottom: 40px;
+        opacity: 0.9;
+        position: relative;
+        z-index: 1;
+    }
+    
+    /* Labels mit Cyan-Akzent */
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: var(--accent-color);
+        font-size: 0.95rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    /* Formulargruppen */
+    .form-group {
+        margin-bottom: 25px;
+        position: relative;
+    }
+    
+    /* Eingabefelder mit verbessertem Design */
+    input[type="text"], input[type="url"], textarea {
+        width: 100%;
+        padding: 15px;
+        box-sizing: border-box;
+        border: 2px solid var(--border-color);
+        background-color: var(--accent-bg);
+        color: var(--text-primary);
+        border-radius: var(--border-radius);
+        transition: var(--transition);
+        font-size: 16px;
+        font-family: inherit;
+        resize: vertical;
+    }
+    
+    input[type="text"]:focus, input[type="url"]:focus, textarea:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        box-shadow: 0 0 20px var(--accent-glow);
+        transform: translateY(-1px);
+    }
+
+    /* Error State für Validierung */
+    .input-error {
+        border-color: var(--error-color) !important;
+        box-shadow: 0 0 20px rgba(255, 68, 68, 0.3) !important;
+    }
+
+    /* Error Message Styling */
+    .error-message {
+        background: linear-gradient(145deg, var(--error-color), #cc3333);
+        color: white;
+        padding: 15px 20px;
+        border-radius: var(--border-radius);
+        margin-bottom: 20px;
+        font-weight: 600;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(255, 68, 68, 0.3);
+        display: none;
+        position: relative;
+        z-index: 10;
+    }
+
+    /* Button-Gruppe zentriert */
+    .button-group {
+        text-align: center;
+        margin-top: 40px;
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        flex-wrap: wrap;
+        position: relative;
+        z-index: 1;
+    }
+    
+    /* Buttons mit Cyan-Design */
+    .button {
+        padding: 15px 30px;
+        border: 2px solid var(--accent-color);
+        font-weight: 600;
+        font-size: 16px;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        transition: var(--transition);
+        color: var(--accent-color);
+        background: transparent;
+        position: relative;
+        overflow: hidden;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        min-width: 150px;
+    }
+
+    /* Button Hover-Effekte */
+    .button::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, var(--accent-glow), transparent);
+        transition: var(--transition);
+    }
+
+    .button:hover::before {
+        left: 100%;
+    }
+    
+    .button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px var(--accent-glow);
+        color: var(--text-primary);
+        background-color: var(--accent-color);
+    }
+
+    .button:active {
+        transform: translateY(0);
+    }
+    
+    /* Output Container */
+    .output-container {
+        margin-top: 50px;
+        position: relative;
+        z-index: 1;
+    }
+    
+    h2 {
+        color: var(--accent-color);
+        text-align: center;
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+        font-weight: 600;
+        text-shadow: 0 0 15px var(--accent-glow);
+    }
+    
+    /* Pre-Block für Template-Ausgabe */
+    pre {
+        background: linear-gradient(145deg, var(--primary-bg), var(--secondary-bg));
+        color: var(--text-primary);
+        padding: 25px;
+        border-radius: var(--border-radius);
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        position: relative;
+        border: 1px solid var(--border-color);
+        font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+        font-size: 14px;
+        line-height: 1.6;
+        box-shadow: 
+            inset 0 2px 10px rgba(0, 0, 0, 0.3),
+            0 2px 10px rgba(0, 212, 255, 0.1);
+    }
+    
+    /* Success Message */
+    .success-message {
+        text-align: center;
+        margin-top: 15px;
+        color: var(--success-color);
+        display: none;
+        font-weight: 600;
+        font-size: 1.1rem;
+        text-shadow: 0 0 10px var(--success-color);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
         body {
-            font-family: 'Roboto', sans-serif;
-            background-color: #1a1a2e;
-            color: #e0e0e0;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-            box-sizing: border-box;
-        }
-        .container {
-            background-color: #16213e;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-            width: 100%;
-            max-width: 800px;
-            box-sizing: border-box;
-        }
-        h1 {
-            color: #0f3460;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #e0e0e0;
-            font-weight: bold;
-        }
-        input[type="text"],
-        textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #0f3460;
-            border-radius: 5px;
-            background-color: #0a1128;
-            color: #e0e0e0;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
-        textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-        input[type="text"]:focus,
-        textarea:focus {
-            border-color: #e94560;
-            outline: none;
-            box-shadow: 0 0 8px rgba(233, 69, 96, 0.5);
-        }
-        .button-container {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-        }
-        .button {
-            background-color: #e94560;
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-        .button:hover {
-            background-color: #b83a50;
-        }
-        .output-container {
-            background-color: #0a1128;
-            padding: 20px;
-            border-radius: 5px;
-            border: 1px solid #0f3460;
-            margin-top: 30px;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            max-height: 400px;
-            overflow-y: auto;
-            display: none; /* Initially hidden */
-        }
-        .output-container code {
-            color: #e0e0e0;
-        }
-        .success-message {
-            color: #4CAF50;
-            margin-top: 10px;
-            text-align: center;
-            display: none;
-        }
-        .facebook-share-container {
-            margin-top: 20px;
-            text-align: center;
-            display: none; /* Initially hidden */
-        }
-        .facebook-share-button {
-            background-color: #3b5998;
-            color: white;
-            padding: 12px 25px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-        .facebook-share-button:hover {
-            background-color: #2d4373;
-        }
-        .toast-notification {
-            visibility: hidden;
-            min-width: 250px;
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            border-radius: 2px;
-            padding: 16px;
-            position: fixed;
-            z-index: 1;
-            left: 50%;
-            bottom: 30px;
-            transform: translateX(-50%);
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-        }
-        .toast-notification.show {
-            visibility: visible;
-            -webkit-animation: fadein 0.5s, fadeout 0.5s 4.5s;
-            animation: fadein 0.5s, fadeout 0.5s 4.5s;
-        }
-        .toast-notification .toast-content.error {
-            background-color: #e94560;
-        }
-        @-webkit-keyframes fadein {
-            from {bottom: 0; opacity: 0;}
-            to {bottom: 30px; opacity: 1;}
-        }
-        @keyframes fadein {
-            from {bottom: 0; opacity: 0;}
-            to {bottom: 30px; opacity: 1;}
-        }
-        @-webkit-keyframes fadeout {
-            from {bottom: 30px; opacity: 1;}
-            to {bottom: 0; opacity: 0;}
-        }
-        @keyframes fadeout {
-            from {bottom: 30px; opacity: 1;}
-            to {bottom: 0; opacity: 0;}
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 600px) {
-            .container {
-                padding: 20px;
-            }
-            .button-container {
-                flex-direction: column;
-            }
-            .button, .facebook-share-button {
-                width: 100%;
-                margin-bottom: 10px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Psy-NEXUS Event Template Generator</h1>
-
-        <div class="form-group">
-            <label for="eventName">Event Name:</label>
-            <input type="text" id="eventName" onkeyup="updateTemplate()" placeholder="z.B. Psy-NEXUS Gathering Vol. 1">
-        </div>
-
-        <div class="form-group">
-            <label for="date">Date & Time:</label>
-            <input type="text" id="date" onkeyup="updateTemplate()" placeholder="z.B. Sa, 23. September 2025, 22:00 - 08:00">
-        </div>
-
-        <div class="form-group">
-            <label for="location">Location:</label>
-            <input type="text" id="location" onkeyup="updateTemplate()" placeholder="z.B. Geheimer Wald, Berlin">
-        </div>
-
-        <div class="form-group">
-            <label for="lineup">Line-up:</label>
-            <textarea id="lineup" onkeyup="updateTemplate()" placeholder="z.B. DJane Luna (Progressive Trance), DJ Sol (Psytrance)"></textarea>
-        </div>
-
-        <div class="form-group">
-            <label for="description">About the Event:</label>
-            <textarea id="description" onkeyup="updateTemplate()" placeholder="Eine magische Nacht erwartet euch mit den besten Beats und einer unvergesslichen Atmosphäre."></textarea>
-        </div>
-
-        <div class="form-group">
-            <label for="ticketLink">Ticket Link (optional):</label>
-            <input type="text" id="ticketLink" onkeyup="updateTemplate()" placeholder="z.B. https://www.eventbrite.de/e/psy-nexus-gathering-tickets-123456789">
-        </div>
-
-        <div class="button-container">
-            <button class="button" onclick="updateTemplate()">Generate Template</button>
-            <button class="button" onclick="copyCode()">Copy Code</button>
-        </div>
-
-        <div class="success-message" id="successMessage">Code copied to clipboard!</div>
-
-        <div class="output-container" id="outputContainer">
-            <code></code>
-        </div>
-
-        <div class="facebook-share-container" id="facebookShareContainer">
-            <button class="facebook-share-button" id="facebookShareBtn">Share on Facebook</button>
-        </div>
-    </div>
-
-    <div id="toastNotification" class="toast-notification">
-        <div class="toast-content">
-            <span class="toast-message"></span>
-        </div>
-    </div>
-
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v12.0&appId=YOUR_APP_ID" nonce="YOUR_NONCE"></script>
-
-    <script>
-        // Initialize Facebook SDK (replace YOUR_APP_ID and YOUR_NONCE)
-        window.fbAsyncInit = function() {
-            FB.init({
-                appId      : 'YOUR_APP_ID', // Replace with your actual App ID
-                cookie     : true,
-                xfbml      : true,
-                version    : 'v12.0'
-            });
-            FB.AppEvents.logPageView();
-        };
-
-        (function(d, s, id){
-            var js, fjs = d.getElementsByTagName(s)[0];
-            if (d.getElementById(id)) {return;}
-            js = d.createElement(s); js.id = id;
-            js.src = "https://connect.facebook.net/en_US/sdk.js";
-            fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));
-
-        function updateTemplate() {
-            const eventName = document.getElementById('eventName').value.trim() || '';
-            const date = document.getElementById('date').value.trim() || '';
-            const location = document.getElementById('location').value.trim() || '';
-            const lineup = document.getElementById('lineup').value.trim() || '';
-            const ticketLink = document.getElementById('ticketLink').value.trim() || '';
-            const description = document.getElementById('description').value.trim() || '';
-    
-            const hasContent = eventName || date || location || lineup || ticketLink || description;
-    
-            let template = '';
-            if (hasContent) {
-                template += `🚀 **${eventName || 'Nicht angegeben'}**\n`;
-                template += `\n📅 **Datum & Zeit:**\n${date || 'Nicht angegeben'}`;
-                template += `\n\n📍 **Ort:**\n${location || 'Nicht angegeben'}`;
-                template += `\n\n🎧 **Line-up:**\n${lineup || 'Nicht angegeben'}`;
-                if (description) {
-                    template += `\n\n📝 **Über das Event:**\n${description}`;
-                }
-                if (ticketLink) {
-                    template += `\n\n🎟️ **Tickets:**\n${ticketLink}`;
-                }
-            }
-            document.getElementById('outputCode').textContent = template;
-           
- 
-            // Zeige den Vorschau-Container und den Kopieren-Button, wenn Inhalt vorhanden ist
-            const outputContainer = document.getElementById('outputContainer');
-            const copyButton = document.querySelector('.button[onclick="copyCode()"]');
-            if (hasContent) {
-                outputContainer.style.display = 'block';
-                copyButton.style.display = 'inline-block';
-            } else {
-                outputContainer.style.display = 'none';
-                copyButton.style.display = 'none';
-            }
-    
-            // Zeige den Facebook-Share-Button, wenn alle erforderlichen Felder gefüllt sind
-            if (eventName && date && location && lineup) {
-                document.getElementById('facebookShareContainer').style.display = 'block';
-            } else {
-                document.getElementById('facebookShareContainer').style.display = 'none';
-            }
+            padding: 10px;
         }
         
-        function copyCode() {
-            const outputCode = document.getElementById('outputCode');
-            navigator.clipboard.writeText(outputCode.textContent);
-            const successMessage = document.getElementById('successMessage');
+        .container {
+            margin: 0;
+            padding: 25px;
+        }
+        
+        h1 {
+            font-size: 2rem;
+        }
+        
+        .button-group {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .button {
+            width: 100%;
+            max-width: 250px;
+        }
+    }
+
+    /* Loading States */
+    .generating {
+        opacity: 0.7;
+        pointer-events: none;
+    }
+
+    /* Smooth Animations */
+    .reveal {
+        animation: fadeInUp 0.5s ease-out forwards;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Improved Focus States */
+    .button:focus-visible {
+        outline: 2px solid var(--accent-color);
+        outline-offset: 2px;
+    }
+
+    input:focus-visible, textarea:focus-visible {
+        outline: 2px solid var(--accent-color);
+        outline-offset: -2px;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Psy-Nexus Template-Generator</h1>
+    <p>Erstelle professionelle Event-Ankündigungen für Telegram, Discord & WhatsApp.</p>
+
+<div class="error-message" id="errorMessage"></div>
+
+<div class="form-group">
+    <label for="eventName">Event-Name</label>
+    <input type="text" id="eventName" onkeyup="scheduleGenerate()" maxlength="200">
+</div>
+<div class="form-group">
+    <label for="date">Datum & Zeit</label>
+    <input type="text" id="date" onkeyup="scheduleGenerate()" maxlength="200">
+</div>
+<div class="form-group">
+    <label for="location">Ort</label>
+    <input type="text" id="location" onkeyup="scheduleGenerate()" maxlength="200">
+</div>
+<div class="form-group">
+    <label for="lineup">Line-up</label>
+    <textarea id="lineup" rows="3" onkeyup="scheduleGenerate()" maxlength="200"></textarea>
+</div>
+<div class="form-group">
+    <label for="ticketLink">Ticket-Link (optional)</label>
+    <input type="url" id="ticketLink" onkeyup="scheduleGenerate()" maxlength="500">
+</div>
+<div class="form-group">
+    <label for="description">Beschreibung (optional)</label>
+    <textarea id="description" rows="4" onkeyup="scheduleGenerate()" maxlength="300"></textarea>
+</div>
+
+<div class="button-group">
+    <button class="button" onclick="generateTemplate()" id="generateBtn">Template generieren</button>
+    <button class="button" onclick="copyCode()" id="copyBtn">Kopieren</button>
+</div>
+
+<div class="output-container" id="outputContainer" style="display: none;">
+    <h2>Vorschau</h2>
+    <pre id="outputCode"></pre>
+    <p class="success-message" id="successMessage">Erfolgreich kopiert!</p>
+</div>
+
+</div>
+
+<script>
+    // PERFORMANCE & ROBUSTHEIT: Debouncing und Validierung
+    let generateTimeout = null;
+    
+    // 1. Debouncing-Scheduler (300ms Verzögerung)
+    function scheduleGenerate() {
+        clearTimeout(generateTimeout);
+        generateTimeout = setTimeout(generateTemplate, 300);
+    }
+
+    // 2. Erweiterte Input-Validierung
+    function validateInputs() {
+        const inputs = {
+            'Event-Name': { element: document.getElementById('eventName'), maxLength: 200 },
+            'Datum & Zeit': { element: document.getElementById('date'), maxLength: 200 },
+            'Ort': { element: document.getElementById('location'), maxLength: 200 },
+            'Line-up': { element: document.getElementById('lineup'), maxLength: 200 },
+            'Ticket-Link': { element: document.getElementById('ticketLink'), maxLength: 500 },
+            'Beschreibung': { element: document.getElementById('description'), maxLength: 300 }
+        };
+        
+        // Alle Error-Styles zurücksetzen
+        clearErrorStates();
+        
+        // Längenvalidierung
+        for (const [fieldName, config] of Object.entries(inputs)) {
+            const value = config.element.value.trim();
+            if (value.length > config.maxLength) {
+                showError(`Feld "${fieldName}" ist zu lang. Maximal ${config.maxLength} Zeichen erlaubt (aktuell: ${value.length}).`);
+                config.element.classList.add('input-error');
+                return false;
+            }
+        }
+
+        // URL-Validierung für Ticket-Link (jetzt flexibel für reinen Text)
+        const urlPattern = /^(http|https|www\.)/i; // Muster, das nach einer URL aussieht
+        const ticketLinkElement = inputs['Ticket-Link'].element;
+        const ticketLinkValue = ticketLinkElement.value.trim();
+        
+        if (ticketLinkValue && urlPattern.test(ticketLinkValue) && !isValidUrl(ticketLinkValue)) {
+            showError('Der Ticket-Link ist nicht gültig. Bitte verwende eine vollständige URL (z.B. https://www.eventlink.ch).');
+            ticketLinkElement.classList.add('input-error');
+            return false;
+        }
+
+        return true;
+    }
+
+    // 3. URL-Validierung
+    function isValidUrl(string) {
+        try {
+            // URL() benötigt das Schema, daher prüfen wir zuerst das Muster.
+            new URL(string);
+            return true;
+        } catch (_) {
+            return false;
+        }
+    }
+
+    // 4. Error-States zurücksetzen
+    function clearErrorStates() {
+        const inputs = document.querySelectorAll('input, textarea');
+        inputs.forEach(input => input.classList.remove('input-error'));
+        hideError();
+    }
+
+    // 5. Verbesserte Error-Anzeige mit UI-Element
+    function showError(message) {
+        const errorElement = document.getElementById('errorMessage');
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+        
+        // Scroll to error message
+        errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
+        // Auto-hide nach 8 Sekunden
+        setTimeout(hideError, 8000);
+        
+        console.error('Validation Error:', message);
+    }
+
+    // 6. Error verstecken
+    function hideError() {
+        const errorElement = document.getElementById('errorMessage');
+        errorElement.style.display = 'none';
+    }
+
+    // 7. HAUPTFUNKTION: Template-Generierung mit Validierung
+    function generateTemplate() {
+        // KRITISCH: Validierung vor Template-Generierung
+        if (!validateInputs()) {
+            return; // Abbruch bei Validierungsfehlern
+        }
+
+        const eventName = document.getElementById('eventName').value.trim() || 'Nicht angegeben';
+        const date = document.getElementById('date').value.trim() || 'Nicht angegeben';
+        const location = document.getElementById('location').value.trim() || 'Nicht angegeben';
+        const lineup = document.getElementById('lineup').value.trim() || 'Nicht angegeben';
+        const ticketLink = document.getElementById('ticketLink').value.trim();
+        const description = document.getElementById('description').value.trim();
+
+        // EMOJI-FREIE TEMPLATE-STRUKTUR
+        let template = `◆ ${eventName.toUpperCase()} ◆\n`;
+        template += `\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
+        template += `\n▶ DATUM & ZEIT\n${date}`;
+        template += `\n\n▶ LOCATION\n${location}`;
+        template += `\n\n▶ LINE-UP\n${lineup}`;
+        
+        if (description) {
+            template += `\n\n▶ INFO\n${description}`;
+        }
+
+        if (ticketLink) {
+            template += `\n\n▶ TICKETS\n${ticketLink}`;
+        }
+
+        template += `\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`;
+
+        document.getElementById('outputCode').textContent = template;
+        
+        const outputContainer = document.getElementById('outputContainer');
+        const copyBtn = document.getElementById('copyBtn');
+        const generateBtn = document.getElementById('generateBtn');
+        
+        // Verbesserte UX: Template immer anzeigen wenn mindestens ein Feld ausgefüllt
+        const hasContent = eventName !== 'Nicht angegeben' || 
+                          date !== 'Nicht angegeben' || 
+                          location !== 'Nicht angegeben' || 
+                          lineup !== 'Nicht angegeben' ||
+                          description || 
+                          ticketLink;
+        
+        if (hasContent) {
+            outputContainer.style.display = 'block';
+            outputContainer.classList.add('reveal');
+            copyBtn.style.display = 'inline-block';
+        } else {
+            outputContainer.style.display = 'none';
+            copyBtn.style.display = 'none';
+        }
+
+        // Visuelles Feedback für Generate-Button
+        generateBtn.textContent = 'Template aktualisiert';
+        generateBtn.style.backgroundColor = 'var(--success-color)';
+        generateBtn.style.color = 'var(--primary-bg)';
+        generateBtn.style.borderColor = 'var(--success-color)';
+        
+        setTimeout(() => {
+            generateBtn.textContent = 'Template generieren';
+            generateBtn.style.backgroundColor = 'transparent';
+            generateBtn.style.color = 'var(--accent-color)';
+            generateBtn.style.borderColor = 'var(--accent-color)';
+        }, 1000);
+    }
+
+    // 8. Copy-Funktion (unverändert)
+    function copyCode() {
+        const outputCode = document.getElementById('outputCode').textContent;
+        const copyBtn = document.getElementById('copyBtn');
+        const successMessage = document.getElementById('successMessage');
+        
+        // Button Loading State
+        copyBtn.classList.add('generating');
+        copyBtn.textContent = 'Kopiere...';
+        copyBtn.style.backgroundColor = 'var(--accent-color)';
+        copyBtn.style.color = 'var(--primary-bg)';
+        
+        navigator.clipboard.writeText(outputCode).then(() => {
             successMessage.style.display = 'block';
+            copyBtn.textContent = 'Kopiert!';
+            copyBtn.style.backgroundColor = 'var(--success-color)';
+            copyBtn.style.borderColor = 'var(--success-color)';
+            
             setTimeout(() => {
                 successMessage.style.display = 'none';
+                copyBtn.textContent = 'Kopieren';
+                copyBtn.style.backgroundColor = 'transparent';
+                copyBtn.style.borderColor = 'var(--accent-color)';
+                copyBtn.style.color = 'var(--accent-color)';
+                copyBtn.classList.remove('generating');
             }, 2000);
-        }
-    
-        function showToast(message, isError = false) {
-            const toast = document.getElementById('toastNotification');
-            const toastContent = toast.querySelector('.toast-content');
-            const toastMessage = toast.querySelector('.toast-message');
+        }).catch(err => {
+            console.error('Kopieren fehlgeschlagen: ', err);
+            copyBtn.textContent = 'Fehler beim Kopieren';
+            copyBtn.style.backgroundColor = 'var(--error-color)';
+            copyBtn.classList.remove('generating');
             
-            toastMessage.textContent = message;
-            if (isError) {
-                toastContent.classList.add('error');
-            } else {
-                toastContent.classList.remove('error');
-            }
-    
-            toast.classList.add('show');
             setTimeout(() => {
-                toast.classList.remove('show');
-            }, 5000);
-        }
-    
-        function shareOnFacebook() {
-            const eventName = document.getElementById('eventName').value.trim() || 'Psy-Nexus Event';
-            const date = document.getElementById('date').value.trim() || 'Datum folgt';
-            const location = document.getElementById('location').value.trim() || 'Ort folgt';
-            const description = document.getElementById('description').value.trim() || 'Erlebe die Magie bei unserem nächsten Event!';
-    
-            const shareTitle = eventName;
-            const shareDescription = `Wann: ${date} | Wo: ${location} | ${description}`;
-            const shareLink = 'https://www.psy-nexus.live/'; // Link zur Hauptseite oder spezifischen Event-Seite
-    
-            FB.ui({
-                method: 'share',
-                href: shareLink,
-                quote: `🚀 ${shareTitle}\n\n📅 ${shareDescription}`
-            }, function(response){
-                if (response && !response.error_message) {
-                    showToast('Erfolgreich auf Facebook geteilt!');
-                } else {
-                    showToast('Fehler beim Teilen. Bitte versuche es erneut.', true);
-                }
-            });
-        }
-    
-        document.addEventListener('DOMContentLoaded', function() {
-            const facebookShareBtn = document.getElementById('facebookShareBtn');
-            if (facebookShareBtn) {
-                facebookShareBtn.addEventListener('click', shareOnFacebook);
-            }
-            updateTemplate();
+                copyBtn.textContent = 'Kopieren';
+                copyBtn.style.backgroundColor = 'transparent';
+                copyBtn.style.color = 'var(--accent-color)';
+            }, 2000);
         });
-    </script>
-    
-    </body>
-    </html>
+    }
+
+    // 9. Initiales Generieren beim Laden
+    window.onload = function() {
+        // Keine automatische Generierung beim Laden, da Felder leer sind
+        // generateTemplate();
+    };
+</script>
+
+</body>
+</html>
