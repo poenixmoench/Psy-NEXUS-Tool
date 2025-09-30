@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Psy-NEXUS Event Template Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #1a1a2e;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        .container {
+            background-color: #16213e;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 800px;
+            box-sizing: border-box;
+        }
+        h1 {
+            color: #0f3460;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #e0e0e0;
+            font-weight: bold;
+        }
+        input[type="text"],
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #0f3460;
+            border-radius: 5px;
+            background-color: #0a1128;
+            color: #e0e0e0;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        input[type="text"]:focus,
+        textarea:focus {
+            border-color: #e94560;
+            outline: none;
+            box-shadow: 0 0 8px rgba(233, 69, 96, 0.5);
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        .button {
+            background-color: #e94560;
+            color: white;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+            flex-grow: 1;
+            min-width: 120px;
+        }
+        .button.pay-button {
+             background-color: #4CAF50;
+        }
+        .button.pay-button:hover {
+             background-color: #45a049;
+        }
+        .button:hover {
+            background-color: #b83a50;
+        }
+        .output-container {
+            background-color: #0a1128;
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid #0f3460;
+            margin-top: 30px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+        }
+        .output-container code {
+            color: #e0e0e0;
+        }
+        .success-message {
+            color: #4CAF50;
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+        }
+        .error-message {
+            color: #e94560;
+            margin-top: 10px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+        .facebook-share-container {
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+        .facebook-share-button {
+            background-color: #3b5998;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .facebook-share-button:hover {
+            background-color: #2d4373;
+        }
+        .toast-notification {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 2px;
+            padding: 16px;
+            position: fixed;
+            z-index: 100;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        .toast-notification.show {
+            visibility: visible;
+            -webkit-animation: fadein 0.5s, fadeout 0.5s 4.5s;
+            animation: fadein 0.5s, fadeout 0.5s 4.5s;
+        }
+        .toast-notification .toast-content.error {
+            background-color: #e94560;
+        }
+        @-webkit-keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+        @keyframes fadein {
+            from {bottom: 0; opacity: 0;}
+            to {bottom: 30px; opacity: 1;}
+        }
+        @-webkit-keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
+        @keyframes fadeout {
+            from {bottom: 30px; opacity: 1;}
+            to {bottom: 0; opacity: 0;}
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            .button-container {
+                flex-direction: column;
+            }
+            .button, .facebook-share-button {
+                width: 100%;
+                margin-bottom: 10px;
+                min-width: auto;
+            }
+        }
+        .input-error {
+            border-color: #e94560 !important;
+            box-shadow: 0 0 8px rgba(233, 69, 96, 0.8) !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Psy-NEXUS Event Template Generator</h1>
+
+        <div class="form-group">
+            <label for="eventName">Event Name:</label>
+            <input type="text" id="eventName" onkeyup="scheduleGenerate()" placeholder="z.B. Psy-NEXUS Gathering Vol. 1" maxlength="200">
+        </div>
+
+        <div class="form-group">
+            <label for="date">Date & Time:</label>
+            <input type="text" id="date" onkeyup="scheduleGenerate()" placeholder="z.B. Sa, 23. September 2025, 22:00 - 08:00" maxlength="150">
+        </div>
+
+        <div class="form-group">
+            <label for="location">Location:</label>
+            <input type="text" id="location" onkeyup="scheduleGenerate()" placeholder="z.B. Geheimer Wald, Berlin" maxlength="200">
+        </div>
+
+        <div class="form-group">
+            <label for="lineup">Line-up:</label>
+            <textarea id="lineup" onkeyup="scheduleGenerate()" placeholder="z.B. DJane Luna (Progressive Trance), DJ Sol (Psytrance)" maxlength="500"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="description">About the Event:</label>
+            <textarea id="description" onkeyup="scheduleGenerate()" placeholder="Eine magische Nacht erwartet euch mit den besten Beats und einer unvergesslichen Atmosphäre." maxlength="300"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="ticketLink">Ticket Link (optional):</label>
+            <input type="text" id="ticketLink" onkeyup="scheduleGenerate()" placeholder="z.B. https://www.eventlink.ch" maxlength="400">
+        </div>
+
+        <div class="button-container">
+            <button class="button pay-button" onclick="startCheckout()">Bezahlen & Freischalten (5,00 €)</button>
+            
+            <button class="button" onclick="generateTemplate()">Generate Template</button>
+            <button class="button" onclick="copyCode()">Copy Code</button>
+        </div>
+
+        <div class="success-message" id="successMessage">Code copied to clipboard!</div>
+        <div class="error-message" id="errorMessage"></div>
+
+        <div class="output-container" id="outputContainer">
+            <code id="outputCode"></code>
+        </div>
+        
+        <div class="facebook-share-container" id="facebookShareContainer">
+            <button class="facebook-share-button" id="facebookShareBtn">Share on Facebook</button>
+        </div>
+    </div>
+
+    <div id="toastNotification" class="toast-notification">
+        <div class="toast-content">
+            <span class="toast-message"></span>
+        </div>
+    </div>
+
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v12.0&appId=1131697458883876" nonce="YOUR_NONCE"></script>
+
+    <script>
+        // API-Basis-URL: WICHTIG - AUF DOMAIN UMGESTELLT
+        const API_BASE_URL = 'http://psy-nexus.live/api'; 
+        const MAX_LENGTHS = {
+            eventName: 200, date: 150, location: 200, lineup: 500, description: 300, ticketLink: 400
+        };
+        const elements = {};
+        let generateTimeout;
+
+        function getElement(id) {
+            if (!elements[id]) {
+                elements[id] = document.getElementById(id);
+            }
+            return elements[id];
+        }
+
+        function isValidUrl(value) {
+            if (!value) return true;
+            try {
+                let url = value.trim();
+                // Korrigierte URL-Validierung, die HTTP(S) hinzufügt, falls es fehlt
+                if (!url.match(/^[a-z][a-z0-9+\-.]*:/i)) {
+                    url = 'https://' + url; 
+                }
+                new URL(url);
+                return true;
+            } catch (e) {
+                return false;
+            }
+        }
+        
+        function showError(message, elementId = null) {
+            const errorElement = getElement('errorMessage');
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+            
+            if (elementId) {
+                const element = getElement(elementId);
+                element.classList.add('input-error');
+                element.focus();
+                element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+        
+        function hideError() {
+            getElement('errorMessage').style.display = 'none';
+            Object.keys(MAX_LENGTHS).forEach(id => {
+                const element = getElement(id);
+                if (element) {
+                    element.classList.remove('input-error');
+                }
+            });
+        }
+
+        function validateAndGetData() {
+            hideError();
+            
+            const data = {};
+            for (const id in MAX_LENGTHS) {
+                const element = getElement(id);
+                const value = element.value.trim();
+                const maxLength = MAX_LENGTHS[id];
+
+                if (value.length > maxLength) {
+                    showError(`Das Feld '${id}' ist zu lang. Max. ${maxLength} Zeichen (aktuell: ${value.length}).`, id);
+                    return null;
+                }
+
+                if (id === 'ticketLink' && value && !isValidUrl(value)) {
+                    showError('Der Ticket-Link ist nicht gültig. Bitte verwende eine vollständige URL (z.B. https://www.eventlink.ch).', id);
+                    return null;
+                }
+                
+                data[id] = value;
+            }
+            return data;
+        }
+
+        function generateTemplate() {
+            const data = validateAndGetData();
+            const outputContainer = getElement('outputContainer');
+            const outputCode = getElement('outputCode');
+
+            if (!data) {
+                outputContainer.style.display = 'none';
+                return;
+            }
+
+            let template = '';
+            if (data.eventName || data.date || data.location || data.lineup || data.description || data.ticketLink) {
+                template += `🚀 **${data.eventName || 'Event-Name fehlt'}**\n`;
+                
+                if (data.date) { template += `\n📅 **Datum & Zeit:**\n${data.date}`; }
+                if (data.location) { template += `\n\n📍 **Ort:**\n${data.location}`; }
+                if (data.lineup) { template += `\n\n🎧 **Line-up:**\n${data.lineup}`; }
+                if (data.description) { template += `\n\n📝 **Über das Event:**\n${data.description}`; }
+                if (data.ticketLink) { template += `\n\n🎟️ **Tickets:**\n${data.ticketLink}`; }
+            }
+            
+            outputCode.textContent = template;
+            outputContainer.style.display = 'block';
+            
+            if (data.eventName && data.date && data.location && data.lineup) {
+                getElement('facebookShareContainer').style.display = 'block';
+            } else {
+                getElement('facebookShareContainer').style.display = 'none';
+            }
+        }
+
+        function scheduleGenerate() {
+            clearTimeout(generateTimeout);
+            generateTimeout = setTimeout(generateTemplate, 300); 
+        }
+
+        async function copyCode() {
+            const outputCodeElement = getElement('outputCode');
+            const codeToCopy = outputCodeElement.textContent;
+            
+            if (!codeToCopy) {
+                showToast('Bitte generieren Sie zuerst ein Template!', true);
+                return;
+            }
+
+            try {
+                await navigator.clipboard.writeText(codeToCopy);
+                showToast('Code in Zwischenablage kopiert!', false);
+            } catch (err) {
+                const textarea = document.createElement('textarea');
+                textarea.value = codeToCopy;
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    showToast('Code in Zwischenablage kopiert (Fallback)!', false);
+                } catch (fallbackErr) {
+                    showToast('Kopieren fehlgeschlagen. Bitte manuell kopieren.', true);
+                }
+                document.body.removeChild(textarea);
+            }
+        }
+        
+        function showToast(message, isError = false) {
+            const toast = getElement('toastNotification');
+            const toastContent = toast.querySelector('.toast-content');
+            const toastMessage = toast.querySelector('.toast-message');
+            
+            toastMessage.textContent = message;
+            if (isError) {
+                toastContent.classList.add('error');
+            } else {
+                toastContent.classList.remove('error');
+            }
+    
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 5000);
+        }
+        
+        // --- ZAHLUNGS-LOGIK ---
+        function startCheckout() {
+            const data = validateAndGetData();
+            if (!data) {
+                showToast('Bitte beheben Sie die Validierungsfehler, bevor Sie zur Zahlung gehen.', true);
+                return;
+            }
+
+            showToast('Leite weiter zu Stripe...', false);
+
+            fetch(API_BASE_URL + '/checkout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => Promise.reject(err));
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.checkout_url) {
+                    window.location.href = data.checkout_url;
+                } else {
+                    showToast('Fehler: Checkout-URL fehlt in der API-Antwort.', true);
+                }
+            })
+            .catch(error => {
+                console.error('API Error:', error);
+                showToast('Verbindungsfehler zur API. Bitte prüfen Sie die Konsole.', true);
+            });
+        }
+        
+        // --- INITIALISIERUNG ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('payment') === 'success') {
+                showToast('Zahlung erfolgreich! Sie können nun Ihr Event-Template generieren.', false);
+            } else if (urlParams.get('payment') === 'cancel') {
+                showToast('Zahlung wurde abgebrochen.', true);
+            }
+            
+            const facebookShareBtn = getElement('facebookShareBtn');
+            if (facebookShareBtn) {
+                facebookShareBtn.addEventListener('click', shareOnFacebook);
+            }
+            generateTemplate(); 
+        });
+
+        // [Facebook-Logik]
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId      : '1131697458883876', // <<< APP ID EINGEFÜGT
+                cookie     : true,
+                xfbml      : true,
+                version    : 'v12.0'
+            });
+            FB.AppEvents.logPageView();
+        };
+
+        function shareOnFacebook() {
+            const data = validateAndGetData();
+            if (!data) return;
+
+            const shareTitle = data.eventName || 'Psy-Nexus Event';
+            const shareDescription = `Wann: ${data.date || 'Datum folgt'} | Wo: ${data.location || 'Ort folgt'} | ${data.description || 'Erlebe die Magie bei unserem nächsten Event!'}`;
+            const shareLink = 'https://www.psy-nexus.live/';
+    
+            FB.ui({
+                method: 'share',
+                href: shareLink,
+                quote: `🚀 ${shareTitle}\n\n📅 ${shareDescription}`
+            }, function(response){
+                if (response && !response.error_message) {
+                    showToast('Erfolgreich auf Facebook geteilt!', false);
+                } else {
+                    showToast('Fehler beim Teilen. Bitte versuche es erneut.', true);
+                }
+            });
+        }
+    </script>
+    
+    </body>
+    </html>
