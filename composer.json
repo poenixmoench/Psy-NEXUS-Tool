@@ -1,0 +1,26 @@
+{
+    "name": "psy-nexus/app",
+    "description": "Psy-Nexus API and Webapp",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "PsyNexus\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=8.0",
+        "slim/slim": "4.*",
+        "php-di/php-di": "^6.0",
+        "slim/psr7": "^1.6",
+        "guzzlehttp/psr7": "^2.6",
+        "nyholm/psr7": "^1.8",
+        "laminas/laminas-diactoros": "^2.22",
+        "stripe/stripe-php": "^17.6"
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true
+        }
+    }
+}
